@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ab2627',
   },
   headingContainer: {
-    flex: 1,
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -18,18 +18,18 @@ const styles = StyleSheet.create({
   },
   boxContainer: {
     flex: 1,
-    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    justifyContent: 'space-around',
     backgroundColor: '#fece35',
   },
   box: {
     width: '30%',
-    height: '30%',
     backgroundColor: '#f3b900',
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonContainer: {
-    flex: 1,
+    flex: 2,
     backgroundColor: '#f34000',
     alignItems: 'center',
     justifyContent: 'space-around',
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 3,
     color: '#000',
+    margin: 10,
     backgroundColor: '#fff',
   },
 });

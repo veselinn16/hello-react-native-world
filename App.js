@@ -1,24 +1,25 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  FlatList,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
+
+// Components
+import Heading from './components/Heading';
+import Boxes from './components/Boxes';
+import Counter from './components/Counter';
+import List from './components/List';
+import ImageContainer from './components/ImageContainer';
+
+// Screens
+import DetailsScreen from './screens/DetailsScreen';
+
+// Navigation
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
 import styles from './styles/styles';
 
-const App = () => {
+const HomeScreen = props => {
   const [query, setQuery] = useState('');
   const [count, setCount] = useState('0');
-
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
-
-  const text = useRef(null);
 
   const changeNumber = newCount => {
     +newCount / 2 && setCount(newCount);
@@ -30,71 +31,36 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headingContainer}>
-        <Text style={styles.heading}>My first React-native App</Text>
-      </View>
-
-      <View style={styles.boxContainer}>
-        <View style={styles.box}>
-          <Text>1</Text>
-        </View>
-        <View style={{...styles.box, backgroundColor: '#f6ce4c'}}>
-          <Text>2</Text>
-        </View>
-        <View style={{...styles.box, backgroundColor: '#fbeab2'}}>
-          <Text ref={text}>3</Text>
-        </View>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TextInput
-          style={{
-            borderColor: 'red',
-            backgroundColor: '#fff',
-            borderRadius: 3,
-          }}
-          placeholder="Change number"
-          value={query}
-          blurOnSubmit={true}
-          onSubmitEditing={({nativeEvent}) => changeNumber(nativeEvent.text)}
-          onChangeText={query => setQuery(query)}
-        />
-        <Text>*Note: Only numbers are valud inputs</Text>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity onPress={() => changeCount(false)}>
-            <Text style={styles.button}>Decrease Number</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => changeCount(true)}>
-            <Text style={styles.button}>Increase Number</Text>
-          </TouchableOpacity>
-        </View>
-        <Text>{count}</Text>
-      </View>
-
-      <FlatList
-        style={{flex: 5}}
-        data={[
-          {text: 'List Item 1'},
-          {text: 'List Item 2'},
-          {text: 'List Item 3'},
-          {text: 'List Item 4'},
-          {text: 'List Item 5'},
-          {text: 'List Item 6'},
-          {text: 'List Item 7'},
-          {text: 'List Item 8'},
-          {text: 'List Item 9'},
-        ]}
-        renderItem={({item, index}) => {
-          return <Text id={index}>{item.text}</Text>;
-        }}
-        keyExtractor={(item, index) => index.toString()}
+      <Heading />
+      <Boxes navigation={props.navigation} />
+      <Counter
+        query={query}
+        changeNumber={changeNumber}
+        setQuery={setQuery}
+        changeCount={changeCount}
+        count={count}
       />
-
-      <View style={{flex: 0.5, justifyContent: 'center', alignItems: 'center'}}>
-        <Image style={{width: 50, height: 50}} source={require('./pic.png')} />
-      </View>
+      <List />
+      <ImageContainer />
     </View>
   );
 };
 
-export default App;
+const AppNavigator = createStackNavigator(
+  {
+    // this object is for the routes
+    // Home: {
+    //   screen: Home,
+    // },
+    Home: HomeScreen,
+    Details: DetailsScreen,
+  },
+  {
+    // options object
+    initialRouteName: 'Home',
+  },
+);
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default () => <AppContainer />;
