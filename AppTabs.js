@@ -1,8 +1,7 @@
-import React, {Component, useState} from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 
 // Components
-// import Heading from './components/Heading';
 import Boxes from './components/Boxes';
 import Counter from './components/Counter';
 import List from './components/List';
@@ -15,62 +14,52 @@ import DetailsScreen from './screens/DetailsScreen';
 import {createAppContainer} from 'react-navigation';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
+// Styles and Icons
 import styles from './styles/styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-class HomeScreen extends Component {
-  state = {
-    query: '',
-    count: '0',
+const HomeScreen = props => {
+  const [query, setQuery] = useState('');
+  const [count, setCount] = useState('0');
+
+  const changeNumber = newCount => {
+    +newCount / 2 && setCount(newCount);
   };
 
-  static navigationOptions = ({navigation}) => ({
-    tabBarIcon: ({focused, horizontal, tintColor}) => {
-      const {routeName} = navigation.state;
-      let IconComponent = MaterialCommunityIcons;
-      let iconName;
-      if (routeName === 'Home') {
-        iconName = `city-variant${focused ? '' : '-outline'}`;
-      } else if (routeName === 'Settings') {
-        iconName = `ios-options`;
-      }
-
-      // You can return any component that you like here!
-      return <IconComponent name={iconName} size={35} color={tintColor} />;
-    },
-  });
-
-  setQuery = query => {
-    this.setState({query});
+  const changeCount = bool => {
+    bool ? setCount(`${+count + 1}`) : setCount(`${+count - 1}`);
   };
 
-  changeNumber = newCount => {
-    +newCount / 2 && this.setState({count: newCount});
-  };
+  return (
+    <View style={styles.container}>
+      <Boxes navigation={props.navigation} />
+      <Counter
+        query={query}
+        changeNumber={changeNumber}
+        setQuery={setQuery}
+        changeCount={changeCount}
+        count={count}
+      />
+      <List />
+      <ImageContainer />
+    </View>
+  );
+};
 
-  changeCount = bool => {
-    bool
-      ? this.setState({count: `${+this.state.count + 1}`})
-      : this.setState({count: `${+this.state.count - 1}`});
-  };
-  render() {
-    return (
-      <View style={styles.container}>
-        {/* <Heading /> */}
-        <Boxes navigation={this.props.navigation} />
-        <Counter
-          query={this.state.query}
-          changeNumber={this.changeNumber}
-          setQuery={this.setQuery}
-          changeCount={this.changeCount}
-          count={this.state.count}
-        />
-        <List />
-        <ImageContainer />
-      </View>
-    );
-  }
-}
+HomeScreen.navigationOptions = ({navigation}) => ({
+  tabBarIcon: ({focused, horizontal, tintColor}) => {
+    const {routeName} = navigation.state;
+    let IconComponent = MaterialCommunityIcons;
+    let iconName;
+    if (routeName === 'Home') {
+      iconName = `city-variant${focused ? '' : '-outline'}`;
+    } else if (routeName === 'Settings') {
+      iconName = `ios-options`;
+    }
+
+    return <IconComponent name={iconName} size={30} color={tintColor} />;
+  },
+});
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -82,11 +71,11 @@ const TabNavigator = createBottomTabNavigator(
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
       style: {
-        height: 60,
+        // height: 60,
         backgroundColor: '#333',
       },
       labelStyle: {
-        fontSize: 13,
+        fontSize: 11,
       },
     },
   },
