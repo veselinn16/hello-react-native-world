@@ -6,6 +6,9 @@ const Counter = ({query, changeCount, changeNumber, setQuery, count}) => (
   <View style={styles.buttonContainer}>
     <TextInput
       style={{
+        borderWidth: 2,
+        padding: 4,
+        borderStyle: 'solid',
         borderColor: 'red',
         backgroundColor: '#fff',
         borderRadius: 3,
@@ -25,7 +28,7 @@ const Counter = ({query, changeCount, changeNumber, setQuery, count}) => (
         <Text style={styles.button}>Increase Number</Text>
       </TouchableOpacity>
     </View>
-    <Text>{count}</Text>
+    <Text style={{fontSize: 30}}>{count}</Text>
   </View>
 );
 

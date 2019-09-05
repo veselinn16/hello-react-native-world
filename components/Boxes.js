@@ -19,7 +19,12 @@ const Boxes = props => {
       <View>
         <Button
           title="Go to Details Page"
-          onPress={() => props.navigation.navigate('Details')}
+          onPress={() =>
+            props.navigation.navigate('Details', {
+              itemId: 19,
+              otherParam: 'Details Screen',
+            })
+          }
         />
       </View>
     </View>
