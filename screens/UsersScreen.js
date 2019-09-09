@@ -27,7 +27,7 @@ const UsersScreen = ({navigation}) => {
       />
       <View style={{flex: 9, backgroundColor: '#555'}}>
         {users.length > 0 ? (
-          <UsersList data={data} users={users} />
+          <UsersList data={data} users={users} navigation={navigation} />
         ) : (
           <Text
             style={{
