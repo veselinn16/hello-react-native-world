@@ -1,96 +1,64 @@
-import React, {Fragment, useEffect, useState} from 'react';
-import {View, Text, Button, FlatList} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-const data = require('../test.json');
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, {Fragment} from 'react';
+import {View, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-import baseURL from '../utils/constants';
+// Components
+import Heading from '../components/Heading';
+import UserData from '../components/UserData';
+
+// Icons
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const posts = require('../test2.json');
 
 const DetailsScreen = ({navigation}) => {
-  // const [query, setQuery] = useState('');
-  const [users, setUsers] = useState([]);
-
-  const getUsers = query => {
-    setUsers(data);
-  };
-
-  const removeUsers = () => {
-    setUsers([]);
-  };
+  const user = navigation.getParam('user');
 
   return (
     <View style={{flex: 1}}>
-      <View
-        style={{
+      {/* // <View> */}
+      <Heading
+        text={`Details about ${user ? user.name : 'User'}`}
+        styles={{
+          backgroundColor: '#222',
           flex: 1,
-          backgroundColor: '#333',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: 10,
-        }}>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#fff',
-            padding: 5,
-            borderRadius: 5,
-          }}
-          onPress={users.length ? removeUsers : getUsers}>
-          <Text style={{fontSize: 17, marginRight: 7}}>
-            {users.length ? 'Remove users' : 'Get users'}
-          </Text>
-          <Icon
-            name={users.length ? 'account-minus' : 'account-arrow-right'}
-            size={24}
-            color="black"
-            style={{marginRight: 10}}></Icon>
-        </TouchableOpacity>
-      </View>
-      <View style={{flex: 9, backgroundColor: '#555'}}>
-        {users.length > 0 ? (
-          <Fragment>
-            <View style={{padding: 10}}>
-              <Text style={{color: '#fff', textAlign: 'center', fontSize: 20}}>
-                Users
-              </Text>
-            </View>
-            <FlatList
-              data={users}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({item}) => {
-                const evenIndex = data.indexOf(item) % 2 == 0 ? true : false;
-                return (
-                  <View
-                    style={{
-                      marginBottom: 5,
-                      paddingLeft: 10,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      backgroundColor: evenIndex ? '#999' : '#777',
-                    }}>
-                    <Icon
-                      name="account"
-                      size={30}
-                      color="white"
-                      style={{marginRight: 10}}></Icon>
-                    <View>
-                      <Text style={{fontSize: 15}}>User: {item.name}</Text>
-                      <Text style={{fontSize: 15}}>
-                        Username: {item.username}
-                      </Text>
-                    </View>
-                  </View>
-                );
+        }}
+      />
+
+      {user ? (
+        <Fragment>
+          <UserData user={user} />
+          {/* REFACTOR TO USERBUTTON COMPONENT */}
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#555',
+            }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#fff',
+                padding: 5,
+                borderRadius: 5,
+                flexDirection: 'row',
               }}
-            />
-          </Fragment>
-        ) : (
-          <Text>Users will appear here!</Text>
-        )}
-      </View>
+              onPress={() => navigation.navigate('Users')}>
+              <Icon name="arrow-left-bold" size={24} />
+              <Text style={{color: '#000', fontSize: 17, marginLeft: 5}}>
+                Back to users
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </Fragment>
+      ) : (
+        <Fragment>
+          <Text>Select User and Come back</Text>
+        </Fragment>
+      )}
     </View>
   );
 };
@@ -102,8 +70,6 @@ DetailsScreen.navigationOptions = ({navigation}) => ({
     let iconName;
     if (routeName === 'Details') {
       iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-    } else if (routeName === 'Settings') {
-      iconName = `ios-options`;
     }
 
     return <IconComponent name={iconName} size={30} color={tintColor} />;
