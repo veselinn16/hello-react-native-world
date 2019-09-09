@@ -1,11 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 
-import styles from '../styles/styles';
-
-const Heading = props => (
-  <View style={styles.headingContainer}>
-    <Text style={styles.heading}>My first React-native App</Text>
+const Heading = ({text, styles}) => (
+  <View style={{padding: 10, ...styles}}>
+    <Text style={{color: '#fff', textAlign: 'center', fontSize: 20}}>
+      {text}
+    </Text>
   </View>
 );
 
