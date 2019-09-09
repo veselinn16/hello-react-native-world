@@ -1,69 +1,95 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, Button} from 'react-native';
+import React, {Fragment, useEffect, useState} from 'react';
+import {View, Text, Button, FlatList} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
+const data = require('../test.json');
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import baseURL from '../utils/constants';
 
 const DetailsScreen = ({navigation}) => {
-  const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState([]);
+  // const [query, setQuery] = useState('');
+  const [users, setUsers] = useState([]);
 
-  const logQuery = query => {
-    console.log(query);
-    setQuery('');
+  const getUsers = query => {
+    setUsers(data);
   };
 
-  const getMovies = async query => {
-    // console.log(baseURL + 't=' + query);
-    // fetch(baseURL + query).then(data => console.log(data));
-    try {
-      const res = await fetch('https://jsonplaceholder.typicode.com/posts/10');
-      const data = await res.json();
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-
-    setQuery('');
+  const removeUsers = () => {
+    setUsers([]);
   };
+
   return (
     <View style={{flex: 1}}>
       <View
         style={{
-          backgroundColor: 'rgba(0,0,0, 0.2)',
+          flex: 1,
+          backgroundColor: '#333',
+          justifyContent: 'center',
           alignItems: 'center',
-          padding: 5,
+          padding: 10,
         }}>
-        <TextInput
+        <TouchableOpacity
           style={{
-            borderWidth: 1,
-            paddingTop: 4,
-            paddingBottom: 4,
-            borderStyle: 'solid',
-            borderColor: '#333',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor: '#fff',
-            borderRadius: 3,
-            width: '70%',
+            padding: 5,
+            borderRadius: 5,
           }}
-          placeholder="Search for movie"
-          value={query}
-          onSubmitEditing={({nativeEvent}) => getMovies(nativeEvent.text)}
-          onChangeText={query => setQuery(query)}
-        />
+          onPress={users.length ? removeUsers : getUsers}>
+          <Text style={{fontSize: 17, marginRight: 7}}>
+            {users.length ? 'Remove users' : 'Get users'}
+          </Text>
+          <Icon
+            name={users.length ? 'account-minus' : 'account-arrow-right'}
+            size={24}
+            color="black"
+            style={{marginRight: 10}}></Icon>
+        </TouchableOpacity>
       </View>
-      <View style={{flex: 5}}>
-        {movies.length > 0 ? (
-          <Text>These are the Movies</Text>
+      <View style={{flex: 9, backgroundColor: '#555'}}>
+        {users.length > 0 ? (
+          <Fragment>
+            <View style={{padding: 10}}>
+              <Text style={{color: '#fff', textAlign: 'center', fontSize: 20}}>
+                Users
+              </Text>
+            </View>
+            <FlatList
+              data={users}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({item}) => {
+                const evenIndex = data.indexOf(item) % 2 == 0 ? true : false;
+                return (
+                  <View
+                    style={{
+                      marginBottom: 5,
+                      paddingLeft: 10,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: evenIndex ? '#999' : '#777',
+                    }}>
+                    <Icon
+                      name="account"
+                      size={30}
+                      color="white"
+                      style={{marginRight: 10}}></Icon>
+                    <View>
+                      <Text style={{fontSize: 15}}>User: {item.name}</Text>
+                      <Text style={{fontSize: 15}}>
+                        Username: {item.username}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </Fragment>
         ) : (
-          <Text>The movies will appear here!</Text>
+          <Text>Users will appear here!</Text>
         )}
-      </View>
-      <View style={{flex: 1}}>
-        <Button
-          title="Back to Home Page"
-          onPress={() => navigation.navigate('Home')}
-        />
       </View>
     </View>
   );
