@@ -7,10 +7,14 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxWidth: '85%',
   },
   para: {
     marginLeft: 10,
     color: '#fff',
+    // textAlign: 'center',
     fontSize: 25,
   },
 });
