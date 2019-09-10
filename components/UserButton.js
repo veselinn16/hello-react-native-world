@@ -3,6 +3,10 @@ import {View, Text, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const UserButton = ({navigation, evenIndex, user}) => {
+  const showUserData = () => {
+    navigation.navigate('Details', {user});
+  };
+
   return (
     <View
       style={{
@@ -19,10 +23,7 @@ const UserButton = ({navigation, evenIndex, user}) => {
         <Text style={{fontSize: 15}}>Username: {user.username}</Text>
       </View>
       <View style={{flex: 1}}>
-        <Button
-          title="go to user"
-          onPress={() => navigation.navigate('Details', {user})}
-        />
+        <Button title="go to user" onPress={showUserData} />
       </View>
     </View>
   );
