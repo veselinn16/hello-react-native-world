@@ -5,6 +5,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 // Components
 import Heading from '../components/Heading';
 import UserData from '../components/UserData';
+import WarningMessage from '../components/WarningMessage';
 
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -30,7 +31,7 @@ const DetailsScreen = ({navigation}) => {
   return (
     <View style={{flex: 1}}>
       <Heading
-        text={`Details about ${user ? user.name : 'User'}`}
+        text={user ? `Details about ${user.name}` : 'Unknown User'}
         styles={{
           backgroundColor: '#222',
           flex: 1,
@@ -67,9 +68,7 @@ const DetailsScreen = ({navigation}) => {
           </View>
         </Fragment>
       ) : (
-        <Fragment>
-          <Text>Select User and Come back</Text>
-        </Fragment>
+        <WarningMessage />
       )}
     </View>
   );
