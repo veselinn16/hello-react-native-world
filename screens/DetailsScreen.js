@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -9,15 +9,26 @@ import UserData from '../components/UserData';
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {NavigationEvents} from 'react-navigation';
 
 const posts = require('../test2.json');
 
 const DetailsScreen = ({navigation}) => {
   const user = navigation.getParam('user');
 
+  const removeCurrentUser = () => {
+    // set the current user to null
+    navigation.setParams({user: null});
+  };
+
+  const navigateBackToUsers = () => {
+    removeCurrentUser();
+    // return back to Users Screen
+    navigation.navigate('Users');
+  };
+
   return (
     <View style={{flex: 1}}>
-      {/* // <View> */}
       <Heading
         text={`Details about ${user ? user.name : 'User'}`}
         styles={{
@@ -30,6 +41,7 @@ const DetailsScreen = ({navigation}) => {
 
       {user ? (
         <Fragment>
+          <NavigationEvents onDidBlur={removeCurrentUser} />
           <UserData user={user} />
           {/* REFACTOR TO USERBUTTON COMPONENT */}
           <View
@@ -46,7 +58,7 @@ const DetailsScreen = ({navigation}) => {
                 borderRadius: 5,
                 flexDirection: 'row',
               }}
-              onPress={() => navigation.navigate('Users')}>
+              onPress={navigateBackToUsers}>
               <Icon name="arrow-left-bold" size={24} />
               <Text style={{color: '#000', fontSize: 17, marginLeft: 5}}>
                 Back to users
