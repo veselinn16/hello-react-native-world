@@ -6,13 +6,14 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Heading from '../components/Heading';
 import UserData from '../components/UserData';
 import WarningMessage from '../components/WarningMessage';
+import Button from '../components/Button';
 
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {NavigationEvents} from 'react-navigation';
 
-const posts = require('../test2.json');
+// const posts = require('../test2.json');
 
 const DetailsScreen = ({navigation}) => {
   const user = navigation.getParam('user');
@@ -44,6 +45,16 @@ const DetailsScreen = ({navigation}) => {
         <Fragment>
           <NavigationEvents onDidBlur={removeCurrentUser} />
           <UserData user={user} />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              width: '100%',
+              backgroundColor: '#555',
+            }}>
+            <Button resource="posts" navigation={navigation} user={user} />
+            <Button resource="todos" navigation={navigation} user={user} />
+          </View>
           {/* REFACTOR TO USERBUTTON COMPONENT */}
           <View
             style={{
