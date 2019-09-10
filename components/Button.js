@@ -4,11 +4,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 const Button = ({resource, navigation, user}) => {
-  const determineRoute = () => {
-    console.log(resource);
-    // resource.chartAt(0).toUpperCase() + resource.slice(1);
-    return 'Todos';
-  };
+  const capitalizeString = string => string[0].toUpperCase() + string.slice(1);
+
+  const determineRoute = () => capitalizeString(resource);
 
   return (
     <View
