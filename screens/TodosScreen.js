@@ -1,6 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {NavigationEvents} from 'react-navigation';
 
 // Todos
 const todos = require('../testTodos.json');
@@ -19,8 +20,11 @@ const TodosScreen = ({navigation}) => {
 
   const userTodos = user ? getUserTodos(user.id) : null;
 
+  const removeCurrentUser = () => navigation.setParams({user: null});
+
   return (
     <View style={{flex: 1}}>
+      <NavigationEvents onDidBlur={removeCurrentUser} />
       <Heading
         text={user ? `${user.name}'s Todos` : 'Unknown User'}
         styles={{
@@ -42,7 +46,7 @@ TodosScreen.navigationOptions = ({navigation}) => ({
     let IconComponent = Icon;
     let iconName;
     if (routeName === 'Todos') {
-      iconName = `sticky-note${focused ? '' : '-o'}`;
+      iconName = `checkbox-multiple-marked${focused ? '' : '-outline'}`;
     }
 
     return <IconComponent name={iconName} size={30} color={tintColor} />;
