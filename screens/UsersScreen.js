@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const data = require('../test.json');
@@ -6,6 +6,7 @@ const data = require('../test.json');
 // Components
 import UsersButton from '../components/UsersButton';
 import UsersList from '../components/UsersList';
+import {NavigationEvents} from 'react-navigation';
 
 const UsersScreen = ({navigation}) => {
   const [users, setUsers] = useState([]);
@@ -20,6 +21,7 @@ const UsersScreen = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
+      <NavigationEvents onDidBlur={removeUsers} />
       <UsersButton
         users={users}
         getUsers={getUsers}
@@ -51,8 +53,6 @@ UsersScreen.navigationOptions = ({navigation}) => ({
     let iconName;
     if (routeName === 'Users') {
       iconName = `account${focused ? '' : '-outline'}`;
-    } else if (routeName === 'Settings') {
-      iconName = `ios-options`;
     }
 
     return <IconComponent name={iconName} size={30} color={tintColor} />;
