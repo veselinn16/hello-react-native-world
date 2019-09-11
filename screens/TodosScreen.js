@@ -17,11 +17,13 @@ import UserTodos from '../components/UserTodos';
 import WarningMessage from '../components/WarningMessage';
 import FilterMenu from '../components/FilterMenu';
 
+// Helper Functions
+import compare from '../utils/helpers';
+
 const TodosScreen = ({navigation}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => console.log(filter), [filter]);
+  const [filter, setFilter] = useState('Default');
+  const [userTodos, setUserTodos] = useState([]);
 
   const user = navigation.getParam('user');
   const getUserTodos = userId => {
@@ -32,7 +34,40 @@ const TodosScreen = ({navigation}) => {
     setModalVisibility(!isModalVisible);
   };
 
-  const userTodos = user ? getUserTodos(user.id) : null;
+  useEffect(() => {
+    user && setUserTodos(getUserTodos(user.id));
+  }, []);
+  // let userTodos = user ? getUserTodos(user.id) : null;
+
+  const determineFilter = () => {
+    if (filter === 'Completed') {
+      filterByCompleted();
+    } else if (filter === 'Name') {
+      filterByName();
+    } else {
+      filterByDefault();
+    }
+  };
+
+  const filterByDefault = () => {
+    setUserTodos(getUserTodos(user.id));
+  };
+
+  const filterByName = () => {
+    let sortedTodos = [...userTodos];
+
+    setUserTodos(sortedTodos.sort(compare));
+  };
+
+  const filterByCompleted = () => {
+    let filteredTodos = [];
+    let unfinishedTodos = [];
+    userTodos.forEach(todo => {
+      todo.completed ? filteredTodos.push(todo) : unfinishedTodos.push(todo);
+    });
+    unfinishedTodos.forEach(todo => filteredTodos.push(todo));
+    setUserTodos(filteredTodos);
+  };
 
   const removeCurrentUser = () => navigation.setParams({user: null});
 
@@ -66,9 +101,9 @@ const TodosScreen = ({navigation}) => {
       {user ? <UserTodos todos={userTodos} /> : <WarningMessage />}
       <Modal
         style={{flex: 1}}
-        hideModalContentWhileAnimating={true}
         animationIn="slideInDown"
         animationOut="slideOutUp"
+        onModalWillHide={determineFilter}
         isVisible={isModalVisible}
         onBackdropPress={toggleModalVisibility}
         onBackButtonPress={toggleModalVisibility}>
