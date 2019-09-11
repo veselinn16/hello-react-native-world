@@ -73,7 +73,7 @@ const TodosScreen = ({navigation}) => {
         onBackdropPress={toggleModalVisibility}
         onBackButtonPress={toggleModalVisibility}>
         <FilterMenu
-          setFilter={setFilter}
+          selectFilter={setFilter}
           toggleModalVisibility={toggleModalVisibility}
         />
       </Modal>

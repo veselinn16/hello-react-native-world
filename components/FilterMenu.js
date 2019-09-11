@@ -1,11 +1,34 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Button} from 'react-native';
 import {Container, Content} from 'native-base';
 import FilterOption from './FilterOption';
 
-const FilterMenu = ({setFilter, toggleModalVisibility}) => {
-  const goBackToList = () => {
-    setFilter('test filter');
+const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
+  const [filters, setFilter] = useState({
+    Default: false,
+    Name: false,
+    Completed: false,
+  });
+  //   const [defaultFilter, setDefaultFilter] = useState(false);
+  //   const [nameFilter, setNameFilter] = useState(false);
+  //   const [completedFilter, setCompletedFilter] = useState(false);
+
+  const goBackToListFilter = () => {
+    for (let filter in filters) {
+      if (filters[filter]) {
+        selectFilter(filter);
+      }
+    }
+    toggleModalVisibility();
+  };
+
+  const goBackToListNoFilter = () => {
+    setFilter({
+      Default: true,
+      Name: false,
+      Completed: false,
+    });
+    selectFilter('Default');
     toggleModalVisibility();
   };
 
@@ -19,9 +42,40 @@ const FilterMenu = ({setFilter, toggleModalVisibility}) => {
       }}>
       <View style={{backgroundColor: '#555', flex: 1}}>
         <Content>
-          <FilterOption option={'Default'} isActive={true} />
-          <FilterOption option={'Name(Alphabetically)'} isActive={false} />
-          <FilterOption option={'Completed'} isActive={false} />
+          <FilterOption
+            option={'Default'}
+            setRadio={setFilter}
+            filters={filters}
+            isSelected={filters.Default}
+          />
+          <FilterOption
+            option={'Name'}
+            setRadio={setFilter}
+            filters={filters}
+            isSelected={filters.Name}
+          />
+          <FilterOption
+            option={'Completed'}
+            setRadio={setFilter}
+            filters={filters}
+            isSelected={filters.Completed}
+          />
+          {/* <FilterOption
+            option={'Default'}
+            setRadio={setDefaultFilter}
+            isSelected={defaultFilter}
+          />
+          <FilterOption
+            option={'Name(Alphabetically)'}
+            setRadio={setNameFilter}
+            isSelected={nameFilter}
+          />
+          <FilterOption
+            option={'Completed'}
+            setRadio={setCompletedFilter}
+            isSelected={completedFilter}
+          /> */}
+
           <View
             style={{
               flexDirection: 'row',
@@ -29,12 +83,8 @@ const FilterMenu = ({setFilter, toggleModalVisibility}) => {
               backgroundColor: '#555',
               justifyContent: 'space-around',
             }}>
-            <Button style={{width: 100}} title="Save" onPress={goBackToList} />
-            <Button
-              style={{width: 100}}
-              title="Cancel"
-              onPress={goBackToList}
-            />
+            <Button title="Save" onPress={goBackToListFilter} />
+            <Button title="Cancel" onPress={goBackToListNoFilter} />
           </View>
         </Content>
       </View>
