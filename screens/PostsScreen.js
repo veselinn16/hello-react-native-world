@@ -13,22 +13,24 @@ import WarningMessage from '../components/general/WarningMessage';
 import PostsInput from '../components/posts/PostsInput';
 import {Spinner} from 'native-base';
 
-const PostsScreen = ({navigation}) => {
+import {connect} from 'react-redux';
+import {toggleLoading} from '../actions';
+
+const PostsScreen = ({navigation, isLoading, toggleLoading}) => {
   const [search, setSearch] = useState('');
   const [userPosts, setUserPosts] = useState([]);
-  const [isLoading, setLoading] = useState(false);
 
   const user = navigation.getParam('user') || null;
   useEffect(() => {
     // activate spinner
-    setLoading(true);
+    toggleLoading();
     if (user) {
       fetch(`${baseUrl}/posts?userId=${user.id}`)
         .then(res => res.json())
         .then(posts => {
           setUserPosts(posts);
           // deactivate spinner
-          setLoading(false);
+          toggleLoading();
         });
     }
   }, [user]);
@@ -118,4 +120,15 @@ PostsScreen.navigationOptions = ({navigation}) => ({
   },
 });
 
-export default PostsScreen;
+const mapStateToProps = state => ({
+  isLoading: state.isLoading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  toggleLoading: () => dispatch(toggleLoading()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PostsScreen);

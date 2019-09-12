@@ -2,26 +2,26 @@ import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {NavigationEvents} from 'react-navigation';
 import {Spinner} from 'native-base';
 
-// Todos
+// Helpers
 import baseUrl from '../utils/constants';
+import compare from '../utils/helpers';
 
 // Components
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Heading from '../components/general/Heading';
 import UserTodos from '../components/todos/UserTodos';
 import WarningMessage from '../components/general/WarningMessage';
 import FilterMenu from '../components/todos/FilterMenu';
 
-// Helper Functions
-import compare from '../utils/helpers';
+import {connect} from 'react-redux';
+import {toggleLoading} from '../actions';
 
-const TodosScreen = ({navigation}) => {
+const TodosScreen = ({navigation, isLoading, toggleLoading}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [filter, setFilter] = useState('Default');
-  const [isLoading, setLoading] = useState(false);
   const [userTodos, setUserTodos] = useState({
     defaultTodos: [],
     filteredTodos: [],
@@ -32,13 +32,13 @@ const TodosScreen = ({navigation}) => {
   useEffect(() => {
     if (user) {
       // activate spinner
-      setLoading(true);
+      toggleLoading();
       fetch(`${baseUrl}/todos?userId=${user.id}`)
         .then(res => res.json())
         .then(todos => {
           setUserTodos({defaultTodos: todos, filteredTodos: todos});
           // deactivate spinner
-          setLoading(false);
+          toggleLoading();
         });
     }
   }, [user]);
@@ -157,4 +157,15 @@ TodosScreen.navigationOptions = ({navigation}) => ({
   },
 });
 
-export default TodosScreen;
+const mapStateToProps = state => ({
+  isLoading: state.isLoading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  toggleLoading: () => dispatch(toggleLoading()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TodosScreen);

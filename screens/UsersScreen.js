@@ -1,30 +1,32 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import {connect} from 'react-redux';
+import {toggleLoading} from '../actions';
 
 // API
 import baseUrl from '../utils/constants';
 
 // Components
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import UsersButton from '../components/users/UsersButton';
 import UsersList from '../components/users/UsersList';
 import {Spinner} from 'native-base';
 import {NavigationEvents} from 'react-navigation';
 
-const UsersScreen = ({navigation}) => {
+const UsersScreen = ({navigation, toggleLoading, isLoading}) => {
   const [users, setUsers] = useState([]);
-  const [isLoading, setLoading] = useState(false);
 
   const getUsers = async () => {
     // activate spinner
-    setLoading(true);
+    toggleLoading();
     try {
       const res = await fetch(`${baseUrl}/users`);
       const users = await res.json();
       setUsers(users);
 
       // deactivate spinner
-      setLoading(false);
+      toggleLoading();
     } catch (err) {
       console.log(err);
     }
@@ -76,4 +78,17 @@ UsersScreen.navigationOptions = ({navigation}) => ({
   },
 });
 
-export default UsersScreen;
+const mapStateToProps = state => {
+  return {
+    isLoading: state.isLoading,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  toggleLoading: () => dispatch(toggleLoading()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UsersScreen);
