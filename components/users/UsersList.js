@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {FlatList} from 'react-native';
 
 import UserButton from './UserButton';
-import Heading from './Heading';
+import Heading from '../general/Heading';
 
 const UsersList = ({users, navigation}) => {
   return (

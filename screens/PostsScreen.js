@@ -7,10 +7,10 @@ import baseUrl from '../utils/constants';
 
 // Components
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Heading from '../components/Heading';
-import UserPosts from '../components/UserPosts';
-import WarningMessage from '../components/WarningMessage';
-import PostsInput from '../components/PostsInput';
+import Heading from '../components/general/Heading';
+import UserPosts from '../components/posts/UserPosts';
+import WarningMessage from '../components/general/WarningMessage';
+import PostsInput from '../components/posts/PostsInput';
 import {Spinner} from 'native-base';
 
 const PostsScreen = ({navigation}) => {

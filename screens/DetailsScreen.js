@@ -3,10 +3,10 @@ import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // Components
-import Heading from '../components/Heading';
-import UserData from '../components/UserData';
-import WarningMessage from '../components/WarningMessage';
-import Button from '../components/Button';
+import Heading from '../components/general/Heading';
+import UserData from '../components/details/UserData';
+import WarningMessage from '../components/general/WarningMessage';
+import Button from '../components/details/Button';
 
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';

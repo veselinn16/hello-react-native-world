@@ -10,10 +10,10 @@ import {Spinner} from 'native-base';
 import baseUrl from '../utils/constants';
 
 // Components
-import Heading from '../components/Heading';
-import UserTodos from '../components/UserTodos';
-import WarningMessage from '../components/WarningMessage';
-import FilterMenu from '../components/FilterMenu';
+import Heading from '../components/general/Heading';
+import UserTodos from '../components/todos/UserTodos';
+import WarningMessage from '../components/general/WarningMessage';
+import FilterMenu from '../components/todos/FilterMenu';
 
 // Helper Functions
 import compare from '../utils/helpers';

@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import baseUrl from '../utils/constants';
 
 // Components
-import UsersButton from '../components/UsersButton';
-import UsersList from '../components/UsersList';
+import UsersButton from '../components/users/UsersButton';
+import UsersList from '../components/users/UsersList';
 import {Spinner} from 'native-base';
 import {NavigationEvents} from 'react-navigation';
 
