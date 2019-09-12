@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-const data = require('../test.json');
+
+// API
+import baseUrl from '../utils/constants';
 
 // Components
 import UsersButton from '../components/UsersButton';
@@ -11,8 +13,14 @@ import {NavigationEvents} from 'react-navigation';
 const UsersScreen = ({navigation}) => {
   const [users, setUsers] = useState([]);
 
-  const getUsers = query => {
-    setUsers(data);
+  const getUsers = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/users`);
+      const users = await res.json();
+      setUsers(users);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const removeUsers = () => {
@@ -29,7 +37,7 @@ const UsersScreen = ({navigation}) => {
       />
       <View style={{flex: 9, backgroundColor: '#555'}}>
         {users.length > 0 ? (
-          <UsersList data={data} users={users} navigation={navigation} />
+          <UsersList users={users} navigation={navigation} />
         ) : (
           <Text
             style={{
