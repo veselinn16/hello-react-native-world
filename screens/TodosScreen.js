@@ -1,10 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {View, Button, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
-import {
-  TouchableOpacity,
-  TouchableHighlight,
-} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {NavigationEvents} from 'react-navigation';
 
@@ -36,8 +33,7 @@ const TodosScreen = ({navigation}) => {
 
   useEffect(() => {
     user && setUserTodos(getUserTodos(user.id));
-  }, []);
-  // let userTodos = user ? getUserTodos(user.id) : null;
+  }, [user]);
 
   const determineFilter = () => {
     if (filter === 'Completed') {
@@ -83,20 +79,22 @@ const TodosScreen = ({navigation}) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <TouchableOpacity
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#fff',
-            marginLeft: 10,
-            padding: 5,
-            borderRadius: 5,
-          }}
-          onPress={user ? toggleModalVisibility : null}>
-          <Text style={{fontSize: 17, marginRight: 5}}>Sort</Text>
-          <Icon name="sort" size={23} color="#000" />
-        </TouchableOpacity>
+        {user && (
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+              marginLeft: 10,
+              padding: 5,
+              borderRadius: 5,
+            }}
+            onPress={user ? toggleModalVisibility : null}>
+            <Text style={{fontSize: 17, marginRight: 5}}>Sort</Text>
+            <Icon name="sort" size={23} color="#000" />
+          </TouchableOpacity>
+        )}
       </Heading>
       {user ? <UserTodos todos={userTodos} /> : <WarningMessage />}
       <Modal

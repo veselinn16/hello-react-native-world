@@ -9,9 +9,6 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
     Name: false,
     Completed: false,
   });
-  //   const [defaultFilter, setDefaultFilter] = useState(false);
-  //   const [nameFilter, setNameFilter] = useState(false);
-  //   const [completedFilter, setCompletedFilter] = useState(false);
 
   const goBackToListFilter = () => {
     for (let filter in filters) {
@@ -23,12 +20,12 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
   };
 
   const goBackToListNoFilter = () => {
-    setFilter({
-      Default: true,
-      Name: false,
-      Completed: false,
-    });
-    selectFilter('Default');
+    // setFilter({
+    //   Default: true,
+    //   Name: false,
+    //   Completed: false,
+    // });
+    // selectFilter('Default');
     toggleModalVisibility();
   };
 
@@ -60,21 +57,6 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
             filters={filters}
             isSelected={filters.Completed}
           />
-          {/* <FilterOption
-            option={'Default'}
-            setRadio={setDefaultFilter}
-            isSelected={defaultFilter}
-          />
-          <FilterOption
-            option={'Name(Alphabetically)'}
-            setRadio={setNameFilter}
-            isSelected={nameFilter}
-          />
-          <FilterOption
-            option={'Completed'}
-            setRadio={setCompletedFilter}
-            isSelected={completedFilter}
-          /> */}
 
           <View
             style={{
