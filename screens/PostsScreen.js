@@ -1,25 +1,35 @@
 import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {NavigationEvents} from 'react-navigation';
 
+// Helper
 import baseUrl from '../utils/constants';
 
+// Components
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Heading from '../components/Heading';
 import UserPosts from '../components/UserPosts';
 import WarningMessage from '../components/WarningMessage';
 import PostsInput from '../components/PostsInput';
+import {Spinner} from 'native-base';
 
 const PostsScreen = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [userPosts, setUserPosts] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   const user = navigation.getParam('user') || null;
   useEffect(() => {
+    // activate spinner
+    setLoading(true);
     if (user) {
       fetch(`${baseUrl}/posts?userId=${user.id}`)
         .then(res => res.json())
-        .then(posts => setUserPosts(posts));
+        .then(posts => {
+          setUserPosts(posts);
+          // deactivate spinner
+          setLoading(false);
+        });
     }
   }, [user]);
 
@@ -27,7 +37,7 @@ const PostsScreen = ({navigation}) => {
     // filters out all the posts
     const res = await fetch(`${baseUrl}/posts?userId=${userId}`);
     const data = await res.json();
-    // return posts.filter(post => post.userId === userId);
+
     return data;
   };
 
@@ -80,8 +90,17 @@ const PostsScreen = ({navigation}) => {
           searchPosts={searchPosts}
         />
       )}
-
-      {user ? <UserPosts posts={userPosts} /> : <WarningMessage />}
+      <View style={{flex: 9, backgroundColor: '#555'}}>
+        {user ? (
+          isLoading ? (
+            <Spinner color="tomato" />
+          ) : (
+            <UserPosts posts={userPosts} />
+          )
+        ) : (
+          <WarningMessage />
+        )}
+      </View>
     </View>
   );
 };

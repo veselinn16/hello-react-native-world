@@ -4,6 +4,7 @@ import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {NavigationEvents} from 'react-navigation';
+import {Spinner} from 'native-base';
 
 // Todos
 import baseUrl from '../utils/constants';
@@ -20,6 +21,7 @@ import compare from '../utils/helpers';
 const TodosScreen = ({navigation}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [filter, setFilter] = useState('Default');
+  const [isLoading, setLoading] = useState(false);
   const [userTodos, setUserTodos] = useState({
     defaultTodos: [],
     filteredTodos: [],
@@ -29,10 +31,14 @@ const TodosScreen = ({navigation}) => {
 
   useEffect(() => {
     if (user) {
+      // activate spinner
+      setLoading(true);
       fetch(`${baseUrl}/todos?userId=${user.id}`)
         .then(res => res.json())
         .then(todos => {
           setUserTodos({defaultTodos: todos, filteredTodos: todos});
+          // deactivate spinner
+          setLoading(false);
         });
     }
   }, [user]);
@@ -110,11 +116,17 @@ const TodosScreen = ({navigation}) => {
           </TouchableOpacity>
         )}
       </Heading>
-      {user ? (
-        <UserTodos todos={userTodos.filteredTodos} />
-      ) : (
-        <WarningMessage />
-      )}
+      <View style={{flex: 9, backgroundColor: '#555'}}>
+        {user ? (
+          isLoading ? (
+            <Spinner color="tomato" />
+          ) : (
+            <UserTodos todos={userTodos.filteredTodos} />
+          )
+        ) : (
+          <WarningMessage />
+        )}
+      </View>
       <Modal
         style={{flex: 1}}
         animationIn="slideInDown"

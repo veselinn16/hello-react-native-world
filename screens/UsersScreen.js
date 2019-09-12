@@ -8,16 +8,23 @@ import baseUrl from '../utils/constants';
 // Components
 import UsersButton from '../components/UsersButton';
 import UsersList from '../components/UsersList';
+import {Spinner} from 'native-base';
 import {NavigationEvents} from 'react-navigation';
 
 const UsersScreen = ({navigation}) => {
   const [users, setUsers] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
   const getUsers = async () => {
+    // activate spinner
+    setLoading(true);
     try {
       const res = await fetch(`${baseUrl}/users`);
       const users = await res.json();
       setUsers(users);
+
+      // deactivate spinner
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
@@ -38,6 +45,8 @@ const UsersScreen = ({navigation}) => {
       <View style={{flex: 9, backgroundColor: '#555'}}>
         {users.length > 0 ? (
           <UsersList users={users} navigation={navigation} />
+        ) : isLoading ? (
+          <Spinner color="tomato" />
         ) : (
           <Text
             style={{

@@ -15,38 +15,36 @@ const UserTodos = ({todos}) => {
   };
 
   return (
-    <View style={{flex: 9}}>
-      <FlatList
-        data={todos}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => {
-          const index = todos.indexOf(item);
-          return (
-            <View
-              style={{
-                marginTop: determineTopMargin(index),
-                marginBottom: determineBottomMargin(index),
-                padding: 10,
-                height: 50,
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                backgroundColor: item.completed ? '#38cc4f' : '#ff7259',
-              }}>
-              <View style={{maxWidth: '80%'}}>
-                <Text style={{fontSize: 15}}>{item.title}</Text>
-              </View>
-              <Icon
-                name={item.completed ? 'check' : 'close'}
-                size={30}
-                color={item.completed ? 'green' : 'red'}
-              />
+    <FlatList
+      data={todos}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({item}) => {
+        const index = todos.indexOf(item);
+        return (
+          <View
+            style={{
+              marginTop: determineTopMargin(index),
+              marginBottom: determineBottomMargin(index),
+              padding: 10,
+              height: 50,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: item.completed ? '#38cc4f' : '#ff7259',
+            }}>
+            <View style={{maxWidth: '80%'}}>
+              <Text style={{fontSize: 15}}>{item.title}</Text>
             </View>
-          );
-        }}
-      />
-    </View>
+            <Icon
+              name={item.completed ? 'check' : 'close'}
+              size={30}
+              color={item.completed ? 'green' : 'red'}
+            />
+          </View>
+        );
+      }}
+    />
   );
 };
 
