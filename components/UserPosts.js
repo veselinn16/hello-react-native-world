@@ -1,10 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, FlatList, Text} from 'react-native';
 
 import Accordion from './Accordion';
 
 const UserPosts = ({posts}) => {
-  useEffect(() => console.log(posts));
   return (
     <View style={{flex: 9, backgroundColor: '#555'}}>
       {posts.length > 0 ? (

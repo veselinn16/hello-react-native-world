@@ -3,7 +3,7 @@ import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NavigationEvents} from 'react-navigation';
 
-const posts = require('../testPosts.json');
+import baseUrl from '../utils/constants';
 
 import Heading from '../components/Heading';
 import UserPosts from '../components/UserPosts';
@@ -16,16 +16,31 @@ const PostsScreen = ({navigation}) => {
 
   const user = navigation.getParam('user') || null;
   useEffect(() => {
-    if (user) setUserPosts(getUserPosts(user.id));
+    if (user) {
+      fetch(`${baseUrl}/posts?userId=${user.id}`)
+        .then(res => res.json())
+        .then(posts => setUserPosts(posts));
+    }
   }, [user]);
 
-  const getUserPosts = userId => {
+  const getUserPosts = async userId => {
     // filters out all the posts
-    return posts.filter(post => post.userId === userId);
+    const res = await fetch(`${baseUrl}/posts?userId=${userId}`);
+    const data = await res.json();
+    // return posts.filter(post => post.userId === userId);
+    return data;
   };
 
   const searchPosts = (function() {
-    const initialUserPosts = user ? getUserPosts(user.id) : [];
+    // iife closing over the initial array of user posts
+    let initialUserPosts = [];
+    if (user) {
+      getUserPosts(user.id)
+        .then(posts => {
+          initialUserPosts = posts;
+        })
+        .catch(err => console.log(err));
+    }
 
     return search => {
       // do nothing if there are no posts
