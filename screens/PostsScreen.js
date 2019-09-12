@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, FlatList} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {NavigationEvents} from 'react-navigation';
 
@@ -8,15 +8,41 @@ const posts = require('../testPosts.json');
 import Heading from '../components/Heading';
 import UserPosts from '../components/UserPosts';
 import WarningMessage from '../components/WarningMessage';
+import PostsInput from '../components/PostsInput';
 
 const PostsScreen = ({navigation}) => {
-  const user = navigation.getParam('user');
+  const [search, setSearch] = useState('');
+  const [userPosts, setUserPosts] = useState([]);
+
+  const user = navigation.getParam('user') || null;
+  useEffect(() => {
+    if (user) setUserPosts(getUserPosts(user.id));
+  }, [user]);
 
   const getUserPosts = userId => {
+    // filters out all the posts
     return posts.filter(post => post.userId === userId);
   };
 
-  const userPosts = user ? getUserPosts(user.id) : null;
+  const searchPosts = (function() {
+    const initialUserPosts = user ? getUserPosts(user.id) : [];
+
+    return search => {
+      // do nothing if there are no posts
+      if (initialUserPosts.length === 0) return;
+      if (search.length !== 0) {
+        // if there is a search query
+        setUserPosts(
+          initialUserPosts.filter(
+            // return only posts that contain the search query in the title as well as the body
+            post => post.title.includes(search) && post.body.includes(search),
+          ),
+        );
+      } else {
+        setUserPosts(initialUserPosts);
+      }
+    };
+  })();
 
   const removeCurrentUser = () => navigation.setParams({user: null});
 
@@ -32,6 +58,14 @@ const PostsScreen = ({navigation}) => {
           alignItems: 'center',
         }}
       />
+      {user && (
+        <PostsInput
+          search={search}
+          setSearch={setSearch}
+          searchPosts={searchPosts}
+        />
+      )}
+
       {user ? <UserPosts posts={userPosts} /> : <WarningMessage />}
     </View>
   );

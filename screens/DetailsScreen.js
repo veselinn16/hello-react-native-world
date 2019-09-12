@@ -13,8 +13,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {NavigationEvents} from 'react-navigation';
 
-// const posts = require('../test2.json');
-
 const DetailsScreen = ({navigation}) => {
   const user = navigation.getParam('user');
 
