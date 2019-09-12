@@ -25,7 +25,12 @@ const FilterOption = ({option, isSelected, filters, setRadio}) => {
         <Text style={{color: '#fff'}}>{option}</Text>
       </Left>
       <Right>
-        <Radio onPress={() => determineActiveRadio()} selected={isSelected} />
+        <Radio
+          onPress={() => determineActiveRadio()}
+          selected={isSelected}
+          color="#fff"
+          selectedColor="tomato"
+        />
       </Right>
     </ListItem>
   );

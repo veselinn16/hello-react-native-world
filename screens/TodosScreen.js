@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {NavigationEvents} from 'react-navigation';
 
 // Todos
-const todos = require('../testTodos.json');
+import baseUrl from '../utils/constants';
 
 // Components
 import Heading from '../components/Heading';
@@ -20,20 +20,33 @@ import compare from '../utils/helpers';
 const TodosScreen = ({navigation}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [filter, setFilter] = useState('Default');
-  const [userTodos, setUserTodos] = useState([]);
+  const [userTodos, setUserTodos] = useState({
+    defaultTodos: [],
+    filteredTodos: [],
+  });
 
   const user = navigation.getParam('user');
-  const getUserTodos = userId => {
-    return todos.filter(todo => todo.userId === userId);
+
+  useEffect(() => {
+    if (user) {
+      fetch(`${baseUrl}/todos?userId=${user.id}`)
+        .then(res => res.json())
+        .then(todos => {
+          setUserTodos({defaultTodos: todos, filteredTodos: todos});
+        });
+    }
+  }, [user]);
+
+  const updateTodos = filteredTodos => {
+    setUserTodos({
+      defaultTodos: userTodos.defaultTodos,
+      filteredTodos,
+    });
   };
 
   const toggleModalVisibility = () => {
     setModalVisibility(!isModalVisible);
   };
-
-  useEffect(() => {
-    user && setUserTodos(getUserTodos(user.id));
-  }, [user]);
 
   const determineFilter = () => {
     if (filter === 'Completed') {
@@ -46,23 +59,24 @@ const TodosScreen = ({navigation}) => {
   };
 
   const filterByDefault = () => {
-    setUserTodos(getUserTodos(user.id));
+    updateTodos(userTodos.defaultTodos);
   };
 
   const filterByName = () => {
-    let sortedTodos = [...userTodos];
+    let sortedTodos = [...userTodos.defaultTodos];
 
-    setUserTodos(sortedTodos.sort(compare));
+    updateTodos(sortedTodos.sort(compare));
   };
 
   const filterByCompleted = () => {
     let filteredTodos = [];
     let unfinishedTodos = [];
-    userTodos.forEach(todo => {
+    userTodos.defaultTodos.forEach(todo => {
       todo.completed ? filteredTodos.push(todo) : unfinishedTodos.push(todo);
     });
     unfinishedTodos.forEach(todo => filteredTodos.push(todo));
-    setUserTodos(filteredTodos);
+
+    updateTodos(filteredTodos);
   };
 
   const removeCurrentUser = () => navigation.setParams({user: null});
@@ -96,7 +110,11 @@ const TodosScreen = ({navigation}) => {
           </TouchableOpacity>
         )}
       </Heading>
-      {user ? <UserTodos todos={userTodos} /> : <WarningMessage />}
+      {user ? (
+        <UserTodos todos={userTodos.filteredTodos} />
+      ) : (
+        <WarningMessage />
+      )}
       <Modal
         style={{flex: 1}}
         animationIn="slideInDown"

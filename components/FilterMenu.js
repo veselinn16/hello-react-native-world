@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Button} from 'react-native';
-import {Container, Content} from 'native-base';
+import {Content} from 'native-base';
 import FilterOption from './FilterOption';
 
 const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
@@ -20,12 +20,6 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
   };
 
   const goBackToListNoFilter = () => {
-    // setFilter({
-    //   Default: true,
-    //   Name: false,
-    //   Completed: false,
-    // });
-    // selectFilter('Default');
     toggleModalVisibility();
   };
 
@@ -65,8 +59,8 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
               backgroundColor: '#555',
               justifyContent: 'space-around',
             }}>
-            <Button title="Save" onPress={goBackToListFilter} />
             <Button title="Cancel" onPress={goBackToListNoFilter} />
+            <Button title="Save" onPress={goBackToListFilter} />
           </View>
         </Content>
       </View>
