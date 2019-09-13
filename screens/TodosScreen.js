@@ -30,17 +30,18 @@ const TodosScreen = ({navigation, isLoading, toggleLoading}) => {
   const user = navigation.getParam('user');
 
   useEffect(() => {
+    // activate spinner
+    toggleLoading();
     if (user) {
-      // activate spinner
-      toggleLoading();
       fetch(`${baseUrl}/todos?userId=${user.id}`)
         .then(res => res.json())
         .then(todos => {
           setUserTodos({defaultTodos: todos, filteredTodos: todos});
-          // deactivate spinner
-          toggleLoading();
-        });
+        })
+        .catch(err => alert(`Could not fetch ${user.name}'s todos!`));
     }
+    // deactivate spinner
+    toggleLoading();
   }, [user]);
 
   const updateTodos = filteredTodos => {

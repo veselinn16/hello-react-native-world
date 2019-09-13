@@ -24,12 +24,11 @@ const UsersScreen = ({navigation, toggleLoading, isLoading}) => {
       const res = await fetch(`${baseUrl}/users`);
       const users = await res.json();
       setUsers(users);
-
-      // deactivate spinner
-      toggleLoading();
     } catch (err) {
       console.log(err);
     }
+    // deactivate spinner
+    toggleLoading();
   };
 
   const removeUsers = () => {

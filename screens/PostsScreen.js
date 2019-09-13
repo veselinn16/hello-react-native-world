@@ -24,19 +24,22 @@ const PostsScreen = ({navigation, isLoading, toggleLoading}) => {
   useEffect(() => {
     // activate spinner
     toggleLoading();
+
     if (user) {
       fetch(`${baseUrl}/posts?userId=${user.id}`)
         .then(res => res.json())
         .then(posts => {
           setUserPosts(posts);
-          // deactivate spinner
-          toggleLoading();
-        });
+        })
+        .catch(err => alert(`Could not fetch ${user.name}'s posts!`));
     }
+
+    // deactivate spinner
+    toggleLoading();
   }, [user]);
 
   const getUserPosts = async userId => {
-    // filters out all the posts
+    // get user's posts
     const res = await fetch(`${baseUrl}/posts?userId=${userId}`);
     const data = await res.json();
 
