@@ -1,10 +1,15 @@
 import React, {useEffect} from 'react';
 import {View, Text, Button} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {connect} from 'react-redux';
 
-const UserButton = ({navigation, evenIndex, user}) => {
+// Action Creators
+import {setUser} from '../../actions';
+
+const UserButton = ({navigation, setUser, evenIndex, user}) => {
   const showUserData = () => {
-    navigation.navigate('Details', {user});
+    setUser(user);
+    navigation.navigate('Details');
   };
 
   return (
@@ -29,4 +34,11 @@ const UserButton = ({navigation, evenIndex, user}) => {
   );
 };
 
-export default UserButton;
+const mapDispatchToProps = dispatch => ({
+  setUser: user => dispatch(setUser(user)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(UserButton);

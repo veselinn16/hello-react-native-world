@@ -1,4 +1,5 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {Fragment} from 'react';
+import {connect} from 'react-redux';
 import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -11,18 +12,12 @@ import Button from '../components/details/Button';
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {NavigationEvents} from 'react-navigation';
 
-const DetailsScreen = ({navigation}) => {
-  const user = navigation.getParam('user');
+import {removeUser} from '../actions';
 
-  const removeCurrentUser = () => {
-    // set the current user to null
-    navigation.setParams({user: null});
-  };
-
+const DetailsScreen = ({navigation, user, removeUser}) => {
   const navigateBackToUsers = () => {
-    removeCurrentUser();
+    removeUser();
     // return back to Users Screen
     navigation.navigate('Users');
   };
@@ -41,7 +36,6 @@ const DetailsScreen = ({navigation}) => {
 
       {user ? (
         <Fragment>
-          <NavigationEvents onDidBlur={removeCurrentUser} />
           <UserData user={user} />
           <View
             style={{
@@ -96,4 +90,15 @@ DetailsScreen.navigationOptions = ({navigation}) => ({
   },
 });
 
-export default DetailsScreen;
+const mapStateToProps = state => ({
+  user: state.user,
+});
+
+const mapDispatchToProps = dispatch => ({
+  removeUser: () => dispatch(removeUser()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DetailsScreen);

@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+// Components
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
@@ -14,7 +15,6 @@ const styles = StyleSheet.create({
   para: {
     marginLeft: 10,
     color: '#fff',
-    // textAlign: 'center',
     fontSize: 25,
   },
 });
