@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {NavigationEvents} from 'react-navigation';
 import {Spinner} from 'native-base';
 
 // Helpers
@@ -19,7 +18,7 @@ import FilterMenu from '../components/todos/FilterMenu';
 import {connect} from 'react-redux';
 import {toggleLoading} from '../actions';
 
-const TodosScreen = ({navigation, isLoading, toggleLoading}) => {
+const TodosScreen = ({user, navigation, isLoading, todosObj}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
   const [filter, setFilter] = useState('Default');
   const [userTodos, setUserTodos] = useState({
@@ -27,22 +26,20 @@ const TodosScreen = ({navigation, isLoading, toggleLoading}) => {
     filteredTodos: [],
   });
 
-  const user = navigation.getParam('user');
-
-  useEffect(() => {
-    // activate spinner
-    toggleLoading();
-    if (user) {
-      fetch(`${baseUrl}/todos?userId=${user.id}`)
-        .then(res => res.json())
-        .then(todos => {
-          setUserTodos({defaultTodos: todos, filteredTodos: todos});
-        })
-        .catch(err => alert(`Could not fetch ${user.name}'s todos!`));
-    }
-    // deactivate spinner
-    toggleLoading();
-  }, [user]);
+  // useEffect(() => {
+  //   // activate spinner
+  //   toggleLoading();
+  //   if (user) {
+  //     fetch(`${baseUrl}/todos?userId=${user.id}`)
+  //       .then(res => res.json())
+  //       .then(todos => {
+  //         setUserTodos({defaultTodos: todos, filteredTodos: todos});
+  //       })
+  //       .catch(err => alert(`Could not fetch ${user.name}'s todos!`));
+  //   }
+  //   // deactivate spinner
+  //   toggleLoading();
+  // }, [user]);
 
   const updateTodos = filteredTodos => {
     setUserTodos({
@@ -90,7 +87,6 @@ const TodosScreen = ({navigation, isLoading, toggleLoading}) => {
 
   return (
     <View style={{flex: 1}}>
-      <NavigationEvents onDidBlur={removeCurrentUser} />
       <Heading
         text={user ? `${user.name}'s Todos` : 'Unknown User'}
         styles={{
@@ -122,7 +118,7 @@ const TodosScreen = ({navigation, isLoading, toggleLoading}) => {
           isLoading ? (
             <Spinner color="tomato" />
           ) : (
-            <UserTodos todos={userTodos.filteredTodos} />
+            <UserTodos todos={todosObj.todos} />
           )
         ) : (
           <WarningMessage />
@@ -160,6 +156,8 @@ TodosScreen.navigationOptions = ({navigation}) => ({
 
 const mapStateToProps = state => ({
   isLoading: state.isLoading,
+  user: state.user,
+  todosObj: state.todos,
 });
 
 const mapDispatchToProps = dispatch => ({

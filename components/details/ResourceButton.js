@@ -3,10 +3,11 @@ import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
-const ResourceButton = ({resource, navigation}) => {
-  const capitalizeString = string => string[0].toUpperCase() + string.slice(1);
+import {getResource} from '../../utils/helpers';
+import {connect} from 'react-redux';
 
-  const determineRoute = () => capitalizeString(resource);
+const ResourceButton = ({resource, getResource, navigation}) => {
+  const capitalizeString = () => resource[0].toUpperCase() + resource.slice(1);
 
   return (
     <View
@@ -25,7 +26,10 @@ const ResourceButton = ({resource, navigation}) => {
           padding: 5,
           borderRadius: 5,
         }}
-        onPress={() => navigation.navigate(determineRoute())}>
+        onPress={() => {
+          getResource(resource);
+          navigation.navigate(capitalizeString());
+        }}>
         <Text style={{fontSize: 17, marginRight: 7}}>{`See ${resource}`}</Text>
         <Icon
           name={resource === 'posts' ? 'notebook' : 'note'}
@@ -37,4 +41,11 @@ const ResourceButton = ({resource, navigation}) => {
   );
 };
 
-export default ResourceButton;
+const mapDispatchToProps = dispatch => ({
+  getResource: resource => dispatch(getResource(resource)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(ResourceButton);

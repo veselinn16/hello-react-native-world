@@ -1,11 +1,19 @@
-import {GET_TODOS, REMOVE_TODOS, FILTER_TODOS} from '../actions/actionTypes';
+import {SET_TODOS, REMOVE_TODOS, FILTER_TODOS} from '../actions/actionTypes';
 
-export default (state = [], action) => {
+const intiialState = {
+  initialTodos: [],
+  todos: [],
+};
+
+export default (state = intiialState, action) => {
   switch (action.type) {
-    case GET_TODOS:
-      return [];
+    case SET_TODOS:
+      return {
+        initialTodos: action.payload,
+        todos: action.payload,
+      };
     case REMOVE_TODOS:
-      return [];
+      return intiialState;
     case FILTER_TODOS:
       return [];
     default:

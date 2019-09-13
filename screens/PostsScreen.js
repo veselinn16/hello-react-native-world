@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 
 // Components
@@ -14,14 +14,7 @@ import {connect} from 'react-redux';
 // Action Creators
 import {toggleLoading, searchPosts} from '../actions';
 
-// Helpers
-import {getResource} from '../utils/helpers';
-
-const PostsScreen = ({isLoading, user, postsObj, getPosts}) => {
-  useEffect(() => {
-    user && getPosts();
-  }, [user]);
-
+const PostsScreen = ({isLoading, user, postsObj}) => {
   return (
     <View style={{flex: 1}}>
       <Heading
@@ -65,7 +58,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   toggleLoading: () => dispatch(toggleLoading()),
-  getPosts: () => dispatch(getResource('posts')),
   searchPosts: query => dispatch(searchPosts(query)),
 });
 

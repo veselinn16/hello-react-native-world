@@ -1,5 +1,5 @@
 import baseUrl from './constants';
-import {toggleLoading, setUsers, setPosts} from '../actions';
+import {toggleLoading, setUsers, setPosts, setTodos} from '../actions';
 
 export default function compare(a, b) {
   const firstTitle = a.title.toUpperCase();
@@ -34,6 +34,7 @@ export const getUsers = () => async dispatch => {
 };
 
 export const getResource = resource => {
+  // resource = resource.toLowerCase();
   return async (dispatch, getState) => {
     // start loading spinner
     dispatch(toggleLoading());
@@ -50,9 +51,8 @@ export const getResource = resource => {
           dispatch(setPosts(data));
           break;
         case 'todos':
-          console.log('Todo');
+          dispatch(setTodos(data));
           break;
-        // dispatch(setUsers(data));
       }
 
       // stop loading spinner
@@ -60,7 +60,7 @@ export const getResource = resource => {
     } catch (err) {
       dispatch(toggleLoading());
 
-      alert('Could not get users!');
+      alert(err);
     }
   };
 };

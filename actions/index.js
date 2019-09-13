@@ -7,6 +7,7 @@ import {
   SET_POSTS,
   SEARCH_POSTS,
   REMOVE_POSTS,
+  SET_TODOS,
 } from './actionTypes';
 
 // Loading
@@ -47,4 +48,19 @@ export const searchPosts = query => ({
 
 export const removePosts = () => ({
   type: REMOVE_POSTS,
+});
+
+// Todos
+export const setTodos = todos => ({
+  type: SET_TODOS,
+  payload: todos,
+});
+
+export const filterTodos = filter => ({
+  type: FILTER_TODOS,
+  payload: filter,
+});
+
+export const removeTodos = () => ({
+  type: REMOVE_TODOS,
 });
