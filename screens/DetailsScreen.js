@@ -7,12 +7,13 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Heading from '../components/general/Heading';
 import UserData from '../components/details/UserData';
 import WarningMessage from '../components/general/WarningMessage';
-import Button from '../components/details/Button';
+import ResourceButton from '../components/details/ResourceButton';
 
 // Icons
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+// Action Creators
 import {removeUser} from '../actions';
 
 const DetailsScreen = ({navigation, user, removeUser}) => {
@@ -44,8 +45,8 @@ const DetailsScreen = ({navigation, user, removeUser}) => {
               width: '100%',
               backgroundColor: '#555',
             }}>
-            <Button resource="posts" navigation={navigation} user={user} />
-            <Button resource="todos" navigation={navigation} user={user} />
+            <ResourceButton resource="posts" navigation={navigation} />
+            <ResourceButton resource="todos" navigation={navigation} />
           </View>
           {/* REFACTOR TO USERBUTTON COMPONENT */}
           <View
@@ -79,14 +80,9 @@ const DetailsScreen = ({navigation, user, removeUser}) => {
 
 DetailsScreen.navigationOptions = ({navigation}) => ({
   tabBarIcon: ({focused, tintColor}) => {
-    const {routeName} = navigation.state;
-    let IconComponent = Ionicons;
-    let iconName;
-    if (routeName === 'Details') {
-      iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-    }
+    let iconName = `ios-information-circle${focused ? '' : '-outline'}`;
 
-    return <IconComponent name={iconName} size={30} color={tintColor} />;
+    return <Ionicons name={iconName} size={30} color={tintColor} />;
   },
 });
 

@@ -1,7 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Container, Content, Icon, Input, Item} from 'native-base';
 
-const PostsInput = ({setSearch, search, searchPosts}) => {
+import {searchPosts} from '../../actions';
+import {connect} from 'react-redux';
+
+const PostsInput = ({searchPosts}) => {
+  const [search, setSearch] = useState('');
+
   const resetSearch = () => {
     setSearch('');
     searchPosts('');
@@ -38,4 +43,11 @@ const PostsInput = ({setSearch, search, searchPosts}) => {
   );
 };
 
-export default PostsInput;
+const mapDispatchToProps = dispatch => ({
+  searchPosts: query => dispatch(searchPosts(query)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(PostsInput);

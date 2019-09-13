@@ -3,7 +3,7 @@ import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
-const Button = ({resource, navigation, user}) => {
+const ResourceButton = ({resource, navigation}) => {
   const capitalizeString = string => string[0].toUpperCase() + string.slice(1);
 
   const determineRoute = () => capitalizeString(resource);
@@ -25,7 +25,7 @@ const Button = ({resource, navigation, user}) => {
           padding: 5,
           borderRadius: 5,
         }}
-        onPress={() => navigation.navigate(determineRoute(), {user})}>
+        onPress={() => navigation.navigate(determineRoute())}>
         <Text style={{fontSize: 17, marginRight: 7}}>{`See ${resource}`}</Text>
         <Icon
           name={resource === 'posts' ? 'notebook' : 'note'}
@@ -37,4 +37,4 @@ const Button = ({resource, navigation, user}) => {
   );
 };
 
-export default Button;
+export default ResourceButton;

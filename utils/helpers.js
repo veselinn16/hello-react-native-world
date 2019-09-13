@@ -1,5 +1,5 @@
 import baseUrl from './constants';
-import {toggleLoading, setUsers} from '../actions';
+import {toggleLoading, setUsers, setPosts} from '../actions';
 
 export default function compare(a, b) {
   const firstTitle = a.title.toUpperCase();
@@ -14,24 +14,41 @@ export default function compare(a, b) {
   return comparison;
 }
 
+export const getUsers = () => async dispatch => {
+  dispatch(toggleLoading());
+
+  try {
+    const res = await fetch(`${baseUrl}/users`);
+
+    const data = await res.json();
+
+    dispatch(setUsers(data));
+
+    // stop loading spinner
+    dispatch(toggleLoading());
+  } catch (err) {
+    dispatch(toggleLoading());
+
+    alert('Could not get users!');
+  }
+};
+
 export const getResource = resource => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     // start loading spinner
     dispatch(toggleLoading());
 
+    const userId = getState().user.id;
+
     try {
-      const res = await fetch(`${baseUrl}/${resource}`);
+      const res = await fetch(`${baseUrl}/${resource}?userId=${userId}`);
 
       const data = await res.json();
 
       switch (resource) {
-        case 'users':
-          dispatch(setUsers(data));
-          break;
         case 'posts':
-          console.log('Posty');
+          dispatch(setPosts(data));
           break;
-        // dispatch(setUsers(data));
         case 'todos':
           console.log('Todo');
           break;
@@ -46,4 +63,11 @@ export const getResource = resource => {
       alert('Could not get users!');
     }
   };
+};
+
+export const searchPosts = (search, initialPosts) => {
+  return initialPosts.filter(
+    // return only posts that contain the search query in the title as well as the body
+    post => post.title.includes(search) && post.body.includes(search),
+  );
 };

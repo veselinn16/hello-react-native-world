@@ -7,7 +7,7 @@ export const SET_USERS = 'SET_USERS';
 export const REMOVE_USERS = 'REMOVE_USERS';
 
 // Posts actions
-export const GET_POSTS = 'GET_POSTS';
+export const SET_POSTS = 'SET_POSTS';
 export const REMOVE_POSTS = 'REMOVE_POSTS';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
 

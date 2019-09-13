@@ -4,6 +4,9 @@ import {
   SET_USERS,
   SET_USER,
   REMOVE_USER,
+  SET_POSTS,
+  SEARCH_POSTS,
+  REMOVE_POSTS,
 } from './actionTypes';
 
 // Loading
@@ -29,4 +32,19 @@ export const setUser = user => ({
 
 export const removeUser = () => ({
   type: REMOVE_USER,
+});
+
+// Posts
+export const setPosts = posts => ({
+  type: SET_POSTS,
+  payload: posts,
+});
+
+export const searchPosts = query => ({
+  type: SEARCH_POSTS,
+  payload: query,
+});
+
+export const removePosts = () => ({
+  type: REMOVE_POSTS,
 });
