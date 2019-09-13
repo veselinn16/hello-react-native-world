@@ -1,11 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 
 import {connect} from 'react-redux';
-import {toggleLoading} from '../actions';
-
-// API
-import baseUrl from '../utils/constants';
 
 // Components
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,35 +10,14 @@ import UsersList from '../components/users/UsersList';
 import {Spinner} from 'native-base';
 import {NavigationEvents} from 'react-navigation';
 
-const UsersScreen = ({navigation, toggleLoading, isLoading}) => {
-  const [users, setUsers] = useState([]);
+// Action Creators
+import {removeUsers} from '../actions';
 
-  const getUsers = async () => {
-    // activate spinner
-    toggleLoading();
-    try {
-      const res = await fetch(`${baseUrl}/users`);
-      const users = await res.json();
-      setUsers(users);
-    } catch (err) {
-      console.log(err);
-    }
-    // deactivate spinner
-    toggleLoading();
-  };
-
-  const removeUsers = () => {
-    setUsers([]);
-  };
-
+const UsersScreen = ({navigation, isLoading, users, removeUsers}) => {
   return (
     <View style={{flex: 1}}>
       <NavigationEvents onDidBlur={removeUsers} />
-      <UsersButton
-        users={users}
-        getUsers={getUsers}
-        removeUsers={removeUsers}
-      />
+      <UsersButton />
       <View style={{flex: 9, backgroundColor: '#555'}}>
         {users.length > 0 ? (
           <UsersList users={users} navigation={navigation} />
@@ -80,11 +55,12 @@ UsersScreen.navigationOptions = ({navigation}) => ({
 const mapStateToProps = state => {
   return {
     isLoading: state.isLoading,
+    users: state.users,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  toggleLoading: () => dispatch(toggleLoading()),
+  removeUsers: () => dispatch(removeUsers()),
 });
 
 export default connect(

@@ -3,7 +3,15 @@ import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const UsersButton = ({users, removeUsers, getUsers}) => (
+// Helpers
+import {getResource} from '../../utils/helpers';
+
+// Action Creators
+import {removeUsers} from '../../actions';
+
+import {connect} from 'react-redux';
+
+const UsersButton = ({users, removeUsers, getResource}) => (
   <View
     style={{
       flex: 1,
@@ -21,7 +29,7 @@ const UsersButton = ({users, removeUsers, getUsers}) => (
         padding: 5,
         borderRadius: 5,
       }}
-      onPress={users.length ? removeUsers : getUsers}>
+      onPress={users.length ? removeUsers : () => getResource('users')}>
       <Text style={{fontSize: 17, marginRight: 7}}>
         {users.length ? 'Remove users' : 'Get users'}
       </Text>
@@ -34,4 +42,16 @@ const UsersButton = ({users, removeUsers, getUsers}) => (
   </View>
 );
 
-export default UsersButton;
+const mapStateToProps = state => ({
+  users: state.users,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getResource: resource => dispatch(getResource(resource)),
+  removeUsers: () => dispatch(removeUsers()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(UsersButton);
