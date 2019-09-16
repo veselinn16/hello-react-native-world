@@ -4,12 +4,14 @@ export const REMOVE_USER = 'REMOVE_USER';
 
 // Users actions
 export const SET_USERS = 'SET_USERS';
-export const REMOVE_USERS = 'REMOVE_USERS';
 
 // Posts actions
 export const SET_POSTS = 'SET_POSTS';
 export const REMOVE_POSTS = 'REMOVE_POSTS';
 export const SEARCH_POSTS = 'SEARCH_POSTS';
+
+export const UPDATE_SEARCH = 'UPDATE_SEARCH';
+export const RESET_SEARCH = 'RESET_SEARCH';
 
 // Todos actions
 export const SET_TODOS = 'SET_TODOS';

@@ -1,6 +1,5 @@
 import {
   TOGGLE_LOADING,
-  REMOVE_USERS,
   SET_USERS,
   SET_USER,
   REMOVE_USER,
@@ -10,7 +9,10 @@ import {
   SET_TODOS,
   FILTER_TODOS,
   SET_FILTER,
+  REMOVE_TODOS,
   TOGGLE_MODAL_VISIBILITY,
+  UPDATE_SEARCH,
+  RESET_SEARCH,
 } from './actionTypes';
 
 // Loading
@@ -22,10 +24,6 @@ export const toggleLoading = () => ({
 export const setUsers = users => ({
   type: SET_USERS,
   payload: users,
-});
-
-export const removeUsers = () => ({
-  type: REMOVE_USERS,
 });
 
 // User
@@ -42,6 +40,15 @@ export const removeUser = () => ({
 export const setPosts = posts => ({
   type: SET_POSTS,
   payload: posts,
+});
+
+export const updateSearch = query => ({
+  type: UPDATE_SEARCH,
+  payload: query,
+});
+
+export const resetSearch = () => ({
+  type: RESET_SEARCH,
 });
 
 export const searchPosts = query => ({

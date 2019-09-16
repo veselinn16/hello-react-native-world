@@ -1,30 +1,30 @@
 import React, {useState} from 'react';
 import {Container, Content, Icon, Input, Item} from 'native-base';
 
-import {searchPosts} from '../../actions';
+import {updateSearch, searchPosts, resetSearch} from '../../actions';
 import {connect} from 'react-redux';
+import {NavigationEvents} from 'react-navigation';
 
-const PostsInput = ({searchPosts}) => {
-  const [search, setSearch] = useState('');
-
+const PostsInput = ({search, updateSearch, searchPosts, resetQuery}) => {
   const resetSearch = () => {
-    setSearch('');
+    resetQuery();
     searchPosts('');
   };
 
   return (
     <Container style={{flex: 1.5, padding: 5, backgroundColor: '#555'}}>
+      <NavigationEvents onWillBlur={resetQuery} />
       <Content>
         <Item>
           <Input
             style={{color: '#fff'}}
             value={search}
             onChangeText={search => {
-              setSearch(search);
+              updateSearch(search);
               searchPosts(search);
             }}
             onSubmitEditing={({nativeEvent}) => {
-              setSearch(nativeEvent.text);
+              updateSearch(nativeEvent.text);
               searchPosts(nativeEvent.text);
             }}
             placeholder="Search Posts"
@@ -43,11 +43,17 @@ const PostsInput = ({searchPosts}) => {
   );
 };
 
+const mapStateToProps = state => ({
+  search: state.search,
+});
+
 const mapDispatchToProps = dispatch => ({
   searchPosts: query => dispatch(searchPosts(query)),
+  updateSearch: query => dispatch(updateSearch(query)),
+  resetQuery: () => dispatch(resetSearch()),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(PostsInput);

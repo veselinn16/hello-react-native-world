@@ -2,6 +2,7 @@ import React from 'react';
 import {View} from 'react-native';
 
 // Components
+import {NavigationEvents} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Heading from '../components/general/Heading';
 import UserPosts from '../components/posts/UserPosts';
@@ -12,11 +13,13 @@ import {Spinner} from 'native-base';
 import {connect} from 'react-redux';
 
 // Action Creators
+import {getResource} from '../utils/helpers';
 import {toggleLoading, searchPosts} from '../actions';
 
-const PostsScreen = ({isLoading, user, postsObj}) => {
+const PostsScreen = ({getResource, isLoading, user, postsObj}) => {
   return (
     <View style={{flex: 1}}>
+      <NavigationEvents onWillFocus={user ? getResource : null} />
       <Heading
         text={user ? `${user.name}'s Posts` : 'Unknown User'}
         styles={{
@@ -57,6 +60,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getResource: () => dispatch(getResource('posts')),
   toggleLoading: () => dispatch(toggleLoading()),
   searchPosts: query => dispatch(searchPosts(query)),
 });

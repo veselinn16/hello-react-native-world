@@ -10,9 +10,11 @@ import Heading from '../components/general/Heading';
 import UserTodos from '../components/todos/UserTodos';
 import WarningMessage from '../components/general/WarningMessage';
 import FilterMenu from '../components/todos/FilterMenu';
+import {NavigationEvents} from 'react-navigation';
 
+// Action creators
 import {toggleModalVisibility} from '../actions';
-import {applyTodosFilter} from '../utils/helpers';
+import {getResource, applyTodosFilter} from '../utils/helpers';
 
 import {connect} from 'react-redux';
 
@@ -21,6 +23,7 @@ const TodosScreen = ({
   isLoading,
   todosObj,
   applyTodosFilter,
+  getResource,
   modalVisibility,
   toggleModalVisibility,
 }) => {
@@ -29,6 +32,7 @@ const TodosScreen = ({
 
   return (
     <View style={{flex: 1}}>
+      <NavigationEvents onWillFocus={user ? getResource : null} />
       <Heading
         text={user ? `${user.name}'s Todos` : 'Unknown User'}
         styles={{
@@ -97,6 +101,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   toggleModalVisibility: () => dispatch(toggleModalVisibility()),
   applyTodosFilter: () => dispatch(applyTodosFilter()),
+  getResource: () => dispatch(getResource('todos')),
 });
 
 export default connect(
