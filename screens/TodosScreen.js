@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -11,17 +11,21 @@ import UserTodos from '../components/todos/UserTodos';
 import WarningMessage from '../components/general/WarningMessage';
 import FilterMenu from '../components/todos/FilterMenu';
 
+import {toggleModalVisibility} from '../actions';
+import {applyTodosFilter} from '../utils/helpers';
+
 import {connect} from 'react-redux';
 
-const TodosScreen = ({user, isLoading, todosObj}) => {
-  const [isModalVisible, setModalVisibility] = useState(false);
-
+const TodosScreen = ({
+  user,
+  isLoading,
+  todosObj,
+  applyTodosFilter,
+  modalVisibility,
+  toggleModalVisibility,
+}) => {
   // state object destructuring
   const {todos} = todosObj;
-
-  const toggleModalVisibility = () => {
-    setModalVisibility(!isModalVisible);
-  };
 
   return (
     <View style={{flex: 1}}>
@@ -66,8 +70,8 @@ const TodosScreen = ({user, isLoading, todosObj}) => {
         style={{flex: 1}}
         animationIn="slideInDown"
         animationOut="slideOutUp"
-        // onModalWillHide={determineFilter}
-        isVisible={isModalVisible}
+        onModalWillHide={applyTodosFilter}
+        isVisible={modalVisibility}
         onBackdropPress={toggleModalVisibility}
         onBackButtonPress={toggleModalVisibility}>
         <FilterMenu toggleModalVisibility={toggleModalVisibility} />
@@ -87,6 +91,15 @@ TodosScreen.navigationOptions = ({navigation}) => ({
 const mapStateToProps = state => ({
   user: state.user,
   todosObj: state.todos,
+  modalVisibility: state.modalVisibility,
 });
 
-export default connect(mapStateToProps)(TodosScreen);
+const mapDispatchToProps = dispatch => ({
+  toggleModalVisibility: () => dispatch(toggleModalVisibility()),
+  applyTodosFilter: () => dispatch(applyTodosFilter()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TodosScreen);

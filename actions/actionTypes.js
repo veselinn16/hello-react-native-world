@@ -19,3 +19,6 @@ export const SET_FILTER = 'SET_FILTER';
 
 // Loading actions
 export const TOGGLE_LOADING = 'TOGGLE_LOADING';
+
+// Modal action
+export const TOGGLE_MODAL_VISIBILITY = 'TOGGLE_MODAL_VISIBILITY';

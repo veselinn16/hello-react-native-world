@@ -6,6 +6,7 @@ import todosReducer from './todosReducer';
 import filteredTodosReducer from './filterTodosReducer';
 import userReducer from './userReducer';
 import usersReducer from './usersReducer';
+import modalReducer from './modalReducer';
 
 export default combineReducers({
   isLoading: isLoadingReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   todosFilter: filteredTodosReducer,
   user: userReducer,
   users: usersReducer,
+  modalVisibility: modalReducer,
 });

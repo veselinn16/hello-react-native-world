@@ -10,6 +10,7 @@ import {
   SET_TODOS,
   FILTER_TODOS,
   SET_FILTER,
+  TOGGLE_MODAL_VISIBILITY,
 } from './actionTypes';
 
 // Loading
@@ -70,4 +71,9 @@ export const filterTodos = filteredTodos => ({
 
 export const removeTodos = () => ({
   type: REMOVE_TODOS,
+});
+
+// Modal
+export const toggleModalVisibility = () => ({
+  type: TOGGLE_MODAL_VISIBILITY,
 });
