@@ -128,11 +128,3 @@ export const searchPosts = (search, initialPosts) => {
     post => post.title.includes(search) && post.body.includes(search),
   );
 };
-
-//
-// export const updateTodos = filteredTodos => {
-//   setUserTodos({
-//     initialTodos,
-//     todos: filteredTodos,
-//   });
-// };

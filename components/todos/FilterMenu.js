@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Button} from 'react-native';
 import {Content} from 'native-base';
 import FilterOption from './FilterOption';
@@ -7,18 +7,7 @@ import {applyTodosFilter} from '../../utils/helpers';
 import {connect} from 'react-redux';
 
 const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
-  const [filters, setFilter] = useState({
-    Default: false,
-    Name: false,
-    Completed: false,
-  });
-
   const goBackToListFilter = () => {
-    // for (let filter in filters) {
-    //   if (filters[filter]) {
-    //     selectFilter(filter);
-    //   }
-    // }
     applyTodosFilter();
     toggleModalVisibility();
   };
@@ -37,24 +26,9 @@ const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
       }}>
       <View style={{backgroundColor: '#555', flex: 1}}>
         <Content>
-          <FilterOption
-            option={'Default'}
-            setRadio={setFilter}
-            filters={filters}
-            isSelected={filters.Default}
-          />
-          <FilterOption
-            option={'Name'}
-            setRadio={setFilter}
-            filters={filters}
-            isSelected={filters.Name}
-          />
-          <FilterOption
-            option={'Completed'}
-            setRadio={setFilter}
-            filters={filters}
-            isSelected={filters.Completed}
-          />
+          <FilterOption option={'Default'} />
+          <FilterOption option={'Name'} />
+          <FilterOption option={'Completed'} />
 
           <View
             style={{
@@ -73,8 +47,6 @@ const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  // filterTodos: filteredTodos => dispatch(filterTodos(filteredTodos)),
-  // setFilter: filter => dispatch(setFilter(filter)),
   applyTodosFilter: () => dispatch(applyTodosFilter()),
 });
 

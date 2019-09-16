@@ -17,7 +17,7 @@ const TodosScreen = ({user, isLoading, todosObj}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
 
   // state object destructuring
-  const {initialTodos, todos} = todosObj;
+  const {todos} = todosObj;
 
   const toggleModalVisibility = () => {
     setModalVisibility(!isModalVisible);

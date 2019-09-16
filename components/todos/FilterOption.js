@@ -4,26 +4,12 @@ import {ListItem, Radio, Right, Left, Text} from 'native-base';
 import {connect} from 'react-redux';
 import {setFilter} from '../../actions';
 
-const FilterOption = ({option, isSelected, filters, setFilter, setRadio}) => {
-  const deactivateRadios = newFilters => {
-    for (let filter in newFilters) {
-      newFilters[filter] = false;
-    }
-  };
-
-  const determineActiveRadio = () => {
-    const newFilters = {...filters};
-    if (!isSelected) {
-      deactivateRadios(newFilters);
-      newFilters[option] = !isSelected;
-    } else {
-      deactivateRadios(newFilters);
-    }
-    setRadio(newFilters);
-  };
-
+const FilterOption = ({filter, option, setFilter}) => {
   return (
-    <ListItem onPress={() => determineActiveRadio()}>
+    <ListItem
+      onPress={() => {
+        setFilter(option);
+      }}>
       <Left>
         <Text style={{color: '#fff'}}>{option}</Text>
       </Left>
@@ -31,9 +17,8 @@ const FilterOption = ({option, isSelected, filters, setFilter, setRadio}) => {
         <Radio
           onPress={() => {
             setFilter(option);
-            determineActiveRadio();
           }}
-          selected={isSelected}
+          selected={option === filter}
           color="#fff"
           selectedColor="tomato"
         />
@@ -42,11 +27,15 @@ const FilterOption = ({option, isSelected, filters, setFilter, setRadio}) => {
   );
 };
 
+const mapStateToProps = state => ({
+  filter: state.todosFilter,
+});
+
 const mapDispatchToProps = dispatch => ({
   setFilter: filter => dispatch(setFilter(filter)),
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(FilterOption);
