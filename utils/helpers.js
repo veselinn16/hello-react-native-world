@@ -36,6 +36,7 @@ export const getUsers = () => async dispatch => {
 export const getResource = resource => {
   // resource = resource.toLowerCase();
   return async (dispatch, getState) => {
+    console.log(resource);
     // start loading spinner
     dispatch(toggleLoading());
 

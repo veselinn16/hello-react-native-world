@@ -6,6 +6,7 @@ const intiialState = {
 };
 
 export default (state = intiialState, action) => {
+  console.log(action);
   switch (action.type) {
     case SET_TODOS:
       return {
