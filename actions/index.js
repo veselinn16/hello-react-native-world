@@ -8,6 +8,8 @@ import {
   SEARCH_POSTS,
   REMOVE_POSTS,
   SET_TODOS,
+  FILTER_TODOS,
+  SET_FILTER,
 } from './actionTypes';
 
 // Loading
@@ -56,9 +58,14 @@ export const setTodos = todos => ({
   payload: todos,
 });
 
-export const filterTodos = filter => ({
-  type: FILTER_TODOS,
+export const setFilter = filter => ({
+  type: SET_FILTER,
   payload: filter,
+});
+
+export const filterTodos = filteredTodos => ({
+  type: FILTER_TODOS,
+  payload: filteredTodos,
 });
 
 export const removeTodos = () => ({

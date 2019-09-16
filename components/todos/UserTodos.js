@@ -1,9 +1,8 @@
-import React, {useEffect, Fragment} from 'react';
+import React from 'react';
 import {View, Text, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const UserTodos = ({todos}) => {
-  // useEffect(() => console.log(todos));
   determineTopMargin = index => {
     if (index === 0) return 0;
     return 2;

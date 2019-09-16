@@ -15,6 +15,7 @@ export const SEARCH_POSTS = 'SEARCH_POSTS';
 export const SET_TODOS = 'SET_TODOS';
 export const REMOVE_TODOS = 'REMOVE_TODOS';
 export const FILTER_TODOS = 'FILTER_TODOS';
+export const SET_FILTER = 'SET_FILTER';
 
 // Loading actions
 export const TOGGLE_LOADING = 'TOGGLE_LOADING';

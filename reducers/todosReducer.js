@@ -6,7 +6,6 @@ const intiialState = {
 };
 
 export default (state = intiialState, action) => {
-  console.log(action);
   switch (action.type) {
     case SET_TODOS:
       return {
@@ -16,7 +15,10 @@ export default (state = intiialState, action) => {
     case REMOVE_TODOS:
       return intiialState;
     case FILTER_TODOS:
-      return [];
+      return {
+        initialTodos: state.initialTodos,
+        todos: action.payload,
+      };
     default:
       return state;
   }

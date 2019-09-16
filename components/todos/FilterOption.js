@@ -1,7 +1,10 @@
 import React from 'react';
 import {ListItem, Radio, Right, Left, Text} from 'native-base';
 
-const FilterOption = ({option, isSelected, filters, setRadio}) => {
+import {connect} from 'react-redux';
+import {setFilter} from '../../actions';
+
+const FilterOption = ({option, isSelected, filters, setFilter, setRadio}) => {
   const deactivateRadios = newFilters => {
     for (let filter in newFilters) {
       newFilters[filter] = false;
@@ -26,7 +29,10 @@ const FilterOption = ({option, isSelected, filters, setRadio}) => {
       </Left>
       <Right>
         <Radio
-          onPress={() => determineActiveRadio()}
+          onPress={() => {
+            setFilter(option);
+            determineActiveRadio();
+          }}
           selected={isSelected}
           color="#fff"
           selectedColor="tomato"
@@ -36,4 +42,11 @@ const FilterOption = ({option, isSelected, filters, setRadio}) => {
   );
 };
 
-export default FilterOption;
+const mapDispatchToProps = dispatch => ({
+  setFilter: filter => dispatch(setFilter(filter)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(FilterOption);

@@ -1,6 +1,13 @@
 import baseUrl from './constants';
-import {toggleLoading, setUsers, setPosts, setTodos} from '../actions';
+import {
+  toggleLoading,
+  setUsers,
+  setPosts,
+  setTodos,
+  filterTodos,
+} from '../actions';
 
+// for alphabetical sorting of posts
 export default function compare(a, b) {
   const firstTitle = a.title.toUpperCase();
   const secondTitle = b.title.toUpperCase();
@@ -14,6 +21,7 @@ export default function compare(a, b) {
   return comparison;
 }
 
+// getting users off the API
 export const getUsers = () => async dispatch => {
   dispatch(toggleLoading());
 
@@ -33,10 +41,57 @@ export const getUsers = () => async dispatch => {
   }
 };
 
+// filtering function for todos
+const determineFilterFn = (filter, initialTodos) => {
+  if (filter === 'Completed') {
+    return filterByCompleted(initialTodos);
+  } else if (filter === 'Name') {
+    return filterByName(initialTodos);
+  } else {
+    return filterByDefault(initialTodos);
+  }
+};
+
+const filterByDefault = initialTodos => {
+  return initialTodos;
+};
+
+const filterByName = initialTodos => {
+  return [...initialTodos].sort(compare);
+};
+
+const filterByCompleted = initialTodos => {
+  let filteredTodos = [];
+  let unfinishedTodos = [];
+  initialTodos.forEach(todo => {
+    // push completed todos in the filtered array
+    todo.completed ? filteredTodos.push(todo) : unfinishedTodos.push(todo);
+  });
+
+  // push unfinished todos in the array of filtered todos at the end, so they can render lastly in UI
+  unfinishedTodos.forEach(todo => filteredTodos.push(todo));
+
+  // update todos with the filtered todos array
+  return filteredTodos;
+};
+
+export const applyTodosFilter = () => {
+  return (dispatch, getState) => {
+    // array of initial toods
+    let todosObj = getState().todos;
+    const {initialTodos} = todosObj;
+
+    // filter for todos
+    let filter = getState().todosFilter;
+
+    // filter todos and return the new todos
+    dispatch(filterTodos(determineFilterFn(filter, initialTodos)));
+  };
+};
+
+// for getting posts and todos off the API
 export const getResource = resource => {
-  // resource = resource.toLowerCase();
   return async (dispatch, getState) => {
-    console.log(resource);
     // start loading spinner
     dispatch(toggleLoading());
 
@@ -66,9 +121,18 @@ export const getResource = resource => {
   };
 };
 
+// searching through the posts
 export const searchPosts = (search, initialPosts) => {
   return initialPosts.filter(
     // return only posts that contain the search query in the title as well as the body
     post => post.title.includes(search) && post.body.includes(search),
   );
 };
+
+//
+// export const updateTodos = filteredTodos => {
+//   setUserTodos({
+//     initialTodos,
+//     todos: filteredTodos,
+//   });
+// };

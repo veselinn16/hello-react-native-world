@@ -4,10 +4,6 @@ import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Spinner} from 'native-base';
 
-// Helpers
-import baseUrl from '../utils/constants';
-import compare from '../utils/helpers';
-
 // Components
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Heading from '../components/general/Heading';
@@ -16,74 +12,16 @@ import WarningMessage from '../components/general/WarningMessage';
 import FilterMenu from '../components/todos/FilterMenu';
 
 import {connect} from 'react-redux';
-import {toggleLoading} from '../actions';
 
-const TodosScreen = ({user, navigation, isLoading, todosObj}) => {
+const TodosScreen = ({user, isLoading, todosObj}) => {
   const [isModalVisible, setModalVisibility] = useState(false);
-  const [filter, setFilter] = useState('Default');
-  const [userTodos, setUserTodos] = useState({
-    defaultTodos: [],
-    filteredTodos: [],
-  });
 
-  // useEffect(() => {
-  //   // activate spinner
-  //   toggleLoading();
-  //   if (user) {
-  //     fetch(`${baseUrl}/todos?userId=${user.id}`)
-  //       .then(res => res.json())
-  //       .then(todos => {
-  //         setUserTodos({defaultTodos: todos, filteredTodos: todos});
-  //       })
-  //       .catch(err => alert(`Could not fetch ${user.name}'s todos!`));
-  //   }
-  //   // deactivate spinner
-  //   toggleLoading();
-  // }, [user]);
-
-  const updateTodos = filteredTodos => {
-    setUserTodos({
-      defaultTodos: userTodos.defaultTodos,
-      filteredTodos,
-    });
-  };
+  // state object destructuring
+  const {initialTodos, todos} = todosObj;
 
   const toggleModalVisibility = () => {
     setModalVisibility(!isModalVisible);
   };
-
-  const determineFilter = () => {
-    if (filter === 'Completed') {
-      filterByCompleted();
-    } else if (filter === 'Name') {
-      filterByName();
-    } else {
-      filterByDefault();
-    }
-  };
-
-  const filterByDefault = () => {
-    updateTodos(userTodos.defaultTodos);
-  };
-
-  const filterByName = () => {
-    let sortedTodos = [...userTodos.defaultTodos];
-
-    updateTodos(sortedTodos.sort(compare));
-  };
-
-  const filterByCompleted = () => {
-    let filteredTodos = [];
-    let unfinishedTodos = [];
-    userTodos.defaultTodos.forEach(todo => {
-      todo.completed ? filteredTodos.push(todo) : unfinishedTodos.push(todo);
-    });
-    unfinishedTodos.forEach(todo => filteredTodos.push(todo));
-
-    updateTodos(filteredTodos);
-  };
-
-  const removeCurrentUser = () => navigation.setParams({user: null});
 
   return (
     <View style={{flex: 1}}>
@@ -107,7 +45,7 @@ const TodosScreen = ({user, navigation, isLoading, todosObj}) => {
               padding: 5,
               borderRadius: 5,
             }}
-            onPress={user ? toggleModalVisibility : null}>
+            onPress={toggleModalVisibility}>
             <Text style={{fontSize: 17, marginRight: 5}}>Sort</Text>
             <Icon name="sort" size={23} color="#000" />
           </TouchableOpacity>
@@ -118,7 +56,7 @@ const TodosScreen = ({user, navigation, isLoading, todosObj}) => {
           isLoading ? (
             <Spinner color="tomato" />
           ) : (
-            <UserTodos todos={todosObj.todos} />
+            <UserTodos todos={todos} />
           )
         ) : (
           <WarningMessage />
@@ -128,14 +66,11 @@ const TodosScreen = ({user, navigation, isLoading, todosObj}) => {
         style={{flex: 1}}
         animationIn="slideInDown"
         animationOut="slideOutUp"
-        onModalWillHide={determineFilter}
+        // onModalWillHide={determineFilter}
         isVisible={isModalVisible}
         onBackdropPress={toggleModalVisibility}
         onBackButtonPress={toggleModalVisibility}>
-        <FilterMenu
-          selectFilter={setFilter}
-          toggleModalVisibility={toggleModalVisibility}
-        />
+        <FilterMenu toggleModalVisibility={toggleModalVisibility} />
       </Modal>
     </View>
   );
@@ -143,28 +78,15 @@ const TodosScreen = ({user, navigation, isLoading, todosObj}) => {
 
 TodosScreen.navigationOptions = ({navigation}) => ({
   tabBarIcon: ({focused, tintColor}) => {
-    const {routeName} = navigation.state;
-    let IconComponent = Icon;
-    let iconName;
-    if (routeName === 'Todos') {
-      iconName = `checkbox-multiple-marked${focused ? '' : '-outline'}`;
-    }
+    let iconName = `checkbox-multiple-marked${focused ? '' : '-outline'}`;
 
-    return <IconComponent name={iconName} size={30} color={tintColor} />;
+    return <Icon name={iconName} size={30} color={tintColor} />;
   },
 });
 
 const mapStateToProps = state => ({
-  isLoading: state.isLoading,
   user: state.user,
   todosObj: state.todos,
 });
 
-const mapDispatchToProps = dispatch => ({
-  toggleLoading: () => dispatch(toggleLoading()),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TodosScreen);
+export default connect(mapStateToProps)(TodosScreen);

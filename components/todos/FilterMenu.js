@@ -3,7 +3,10 @@ import {View, Button} from 'react-native';
 import {Content} from 'native-base';
 import FilterOption from './FilterOption';
 
-const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
+import {applyTodosFilter} from '../../utils/helpers';
+import {connect} from 'react-redux';
+
+const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
   const [filters, setFilter] = useState({
     Default: false,
     Name: false,
@@ -11,11 +14,12 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
   });
 
   const goBackToListFilter = () => {
-    for (let filter in filters) {
-      if (filters[filter]) {
-        selectFilter(filter);
-      }
-    }
+    // for (let filter in filters) {
+    //   if (filters[filter]) {
+    //     selectFilter(filter);
+    //   }
+    // }
+    applyTodosFilter();
     toggleModalVisibility();
   };
 
@@ -68,4 +72,13 @@ const FilterMenu = ({selectFilter, toggleModalVisibility}) => {
   );
 };
 
-export default FilterMenu;
+const mapDispatchToProps = dispatch => ({
+  // filterTodos: filteredTodos => dispatch(filterTodos(filteredTodos)),
+  // setFilter: filter => dispatch(setFilter(filter)),
+  applyTodosFilter: () => dispatch(applyTodosFilter()),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(FilterMenu);
