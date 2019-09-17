@@ -2,13 +2,14 @@ import React from 'react';
 import {ListItem, Radio, Right, Left, Text} from 'native-base';
 
 import {connect} from 'react-redux';
-import {setFilter} from '../../actions';
+import {setTemporaryFilter} from '../../actions';
 
-const FilterOption = ({filter, option, setFilter}) => {
+const FilterOption = ({filter, option, setTemporaryFilter}) => {
   return (
     <ListItem
+      style={{width: '100%'}}
       onPress={() => {
-        setFilter(option);
+        setTemporaryFilter(option);
       }}>
       <Left>
         <Text style={{color: '#fff'}}>{option}</Text>
@@ -16,7 +17,7 @@ const FilterOption = ({filter, option, setFilter}) => {
       <Right>
         <Radio
           onPress={() => {
-            setFilter(option);
+            setTemporaryFilter(option);
           }}
           selected={option === filter}
           color="#fff"
@@ -28,11 +29,11 @@ const FilterOption = ({filter, option, setFilter}) => {
 };
 
 const mapStateToProps = state => ({
-  filter: state.todosFilter,
+  filter: state.todosFilters.temporaryFilter,
 });
 
 const mapDispatchToProps = dispatch => ({
-  setFilter: filter => dispatch(setFilter(filter)),
+  setTemporaryFilter: filter => dispatch(setTemporaryFilter(filter)),
 });
 
 export default connect(

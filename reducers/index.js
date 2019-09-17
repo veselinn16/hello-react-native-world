@@ -14,7 +14,7 @@ export default combineReducers({
   posts: postsReducer,
   search: searchReducer,
   todos: todosReducer,
-  todosFilter: filteredTodosReducer,
+  todosFilters: filteredTodosReducer,
   user: userReducer,
   users: usersReducer,
   modalVisibility: modalReducer,

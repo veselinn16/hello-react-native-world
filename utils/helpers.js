@@ -4,11 +4,12 @@ import {
   setUsers,
   setPosts,
   setTodos,
+  setFilter,
   filterTodos,
 } from '../actions';
 
 // for alphabetical sorting of posts
-export default function compare(a, b) {
+const compare = (a, b) => {
   const firstTitle = a.title.toUpperCase();
   const secondTitle = b.title.toUpperCase();
 
@@ -19,7 +20,7 @@ export default function compare(a, b) {
     comparison = -1;
   }
   return comparison;
-}
+};
 
 // getting users off the API
 export const getUsers = () => async dispatch => {
@@ -77,15 +78,21 @@ const filterByCompleted = initialTodos => {
 
 export const applyTodosFilter = () => {
   return (dispatch, getState) => {
+    // current temporary filter in state object before user clicked 'Save'
+    const temporaryFilter = getState().todosFilters.temporaryFilter;
+
+    // sets the active filter to be the up-until-now temporary filter
+    dispatch(setFilter(temporaryFilter));
+
     // array of initial toods
     let todosObj = getState().todos;
     const {initialTodos} = todosObj;
 
-    // filter for todos
-    let filter = getState().todosFilter;
+    // active filter after user has clicked 'Save' (previously was temporary)
+    let activeFilter = getState().todosFilters.activeFilter;
 
     // filter todos and return the new todos
-    dispatch(filterTodos(determineFilterFn(filter, initialTodos)));
+    dispatch(filterTodos(determineFilterFn(activeFilter, initialTodos)));
   };
 };
 

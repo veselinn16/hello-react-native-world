@@ -1,11 +1,34 @@
-import {SET_FILTER, REMOVE_TODOS} from '../actions/actionTypes';
+import {
+  SET_FILTER,
+  SET_TEMPORARY_FILTER,
+  REMOVE_TODOS,
+  CANCEL_FILTER,
+} from '../actions/actionTypes';
 
-export default (state = 'Default', action) => {
+const initialState = {
+  activeFilter: 'Default',
+  temporaryFilter: 'Default',
+};
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case SET_FILTER:
-      return action.payload;
+      return {
+        activeFilter: action.payload,
+        temporaryFilter: action.payload,
+      };
+    case SET_TEMPORARY_FILTER:
+      return {
+        activeFilter: state.activeFilter,
+        temporaryFilter: action.payload,
+      };
+    case CANCEL_FILTER:
+      return {
+        activeFilter: state.activeFilter,
+        temporaryFilter: state.activeFilter,
+      };
     case REMOVE_TODOS:
-      return 'Default';
+      return initialState;
     default:
       return state;
   }

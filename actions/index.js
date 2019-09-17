@@ -13,6 +13,8 @@ import {
   TOGGLE_MODAL_VISIBILITY,
   UPDATE_SEARCH,
   RESET_SEARCH,
+  SET_TEMPORARY_FILTER,
+  CANCEL_FILTER,
 } from './actionTypes';
 
 // Loading
@@ -69,6 +71,15 @@ export const setTodos = todos => ({
 export const setFilter = filter => ({
   type: SET_FILTER,
   payload: filter,
+});
+
+export const setTemporaryFilter = temporaryFilter => ({
+  type: SET_TEMPORARY_FILTER,
+  payload: temporaryFilter,
+});
+
+export const cancelFilter = () => ({
+  type: CANCEL_FILTER,
 });
 
 export const filterTodos = filteredTodos => ({

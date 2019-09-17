@@ -1,18 +1,25 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {View, Button} from 'react-native';
 import {Content} from 'native-base';
 import FilterOption from './FilterOption';
 
+// Action creators
 import {applyTodosFilter} from '../../utils/helpers';
-import {connect} from 'react-redux';
+import {cancelFilter} from '../../actions';
 
-const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
+const FilterMenu = ({
+  toggleModalVisibility,
+  applyTodosFilter,
+  cancelFilter,
+}) => {
   const goBackToListFilter = () => {
     applyTodosFilter();
     toggleModalVisibility();
   };
 
   const goBackToListNoFilter = () => {
+    cancelFilter();
     toggleModalVisibility();
   };
 
@@ -21,11 +28,20 @@ const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
       style={{
         height: '40%',
         padding: 10,
-        backgroundColor: '#555',
+        backgroundColor: '#777',
         justifyContent: 'space-between',
       }}>
-      <View style={{backgroundColor: '#555', flex: 1}}>
-        <Content>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+        }}>
+        <Content
+          contentContainerStyle={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+          }}>
           <FilterOption option={'Default'} />
           <FilterOption option={'Name'} />
           <FilterOption option={'Completed'} />
@@ -34,11 +50,19 @@ const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
             style={{
               flexDirection: 'row',
               marginTop: 15,
-              backgroundColor: '#555',
-              justifyContent: 'space-around',
+              width: '80%',
+              justifyContent: 'space-between',
             }}>
-            <Button title="Cancel" onPress={goBackToListNoFilter} />
-            <Button title="Save" onPress={goBackToListFilter} />
+            <View style={{width: '40%'}}>
+              <Button
+                color="tomato"
+                title="Cancel"
+                onPress={goBackToListNoFilter}
+              />
+            </View>
+            <View style={{width: '40%'}}>
+              <Button title="Save" onPress={goBackToListFilter} />
+            </View>
           </View>
         </Content>
       </View>
@@ -48,6 +72,7 @@ const FilterMenu = ({toggleModalVisibility, applyTodosFilter}) => {
 
 const mapDispatchToProps = dispatch => ({
   applyTodosFilter: () => dispatch(applyTodosFilter()),
+  cancelFilter: () => dispatch(cancelFilter()),
 });
 
 export default connect(

@@ -18,6 +18,8 @@ export const SET_TODOS = 'SET_TODOS';
 export const REMOVE_TODOS = 'REMOVE_TODOS';
 export const FILTER_TODOS = 'FILTER_TODOS';
 export const SET_FILTER = 'SET_FILTER';
+export const SET_TEMPORARY_FILTER = 'SET_TEMPORARY_FILTER';
+export const CANCEL_FILTER = 'CANCEL_FILTER';
 
 // Loading actions
 export const TOGGLE_LOADING = 'TOGGLE_LOADING';

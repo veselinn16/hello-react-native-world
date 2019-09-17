@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -10,11 +10,10 @@ import Heading from '../components/general/Heading';
 import UserTodos from '../components/todos/UserTodos';
 import WarningMessage from '../components/general/WarningMessage';
 import FilterMenu from '../components/todos/FilterMenu';
-import {NavigationEvents} from 'react-navigation';
 
 // Action creators
-import {toggleModalVisibility} from '../actions';
-import {getResource, applyTodosFilter} from '../utils/helpers';
+import {toggleModalVisibility, cancelFilter} from '../actions';
+import {getResource} from '../utils/helpers';
 
 import {connect} from 'react-redux';
 
@@ -22,17 +21,25 @@ const TodosScreen = ({
   user,
   isLoading,
   todosObj,
-  applyTodosFilter,
+  cancelFilter,
   getResource,
   modalVisibility,
   toggleModalVisibility,
 }) => {
+  useEffect(() => {
+    if (user) getResource();
+  }, [user]);
+
   // state object destructuring
   const {todos} = todosObj;
 
+  const hideModalAndRemoveFilter = () => {
+    cancelFilter();
+    toggleModalVisibility();
+  };
+
   return (
     <View style={{flex: 1}}>
-      <NavigationEvents onWillFocus={user ? getResource : null} />
       <Heading
         text={user ? `${user.name}'s Todos` : 'Unknown User'}
         styles={{
@@ -74,9 +81,8 @@ const TodosScreen = ({
         style={{flex: 1}}
         animationIn="slideInDown"
         animationOut="slideOutUp"
-        onModalWillHide={applyTodosFilter}
         isVisible={modalVisibility}
-        onBackdropPress={toggleModalVisibility}
+        onBackdropPress={hideModalAndRemoveFilter}
         onBackButtonPress={toggleModalVisibility}>
         <FilterMenu toggleModalVisibility={toggleModalVisibility} />
       </Modal>
@@ -100,8 +106,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   toggleModalVisibility: () => dispatch(toggleModalVisibility()),
-  applyTodosFilter: () => dispatch(applyTodosFilter()),
   getResource: () => dispatch(getResource('todos')),
+  cancelFilter: () => dispatch(cancelFilter()),
 });
 
 export default connect(
