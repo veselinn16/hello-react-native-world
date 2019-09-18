@@ -4,6 +4,7 @@ export const REMOVE_USER = 'REMOVE_USER';
 
 // Users actions
 export const SET_USERS = 'SET_USERS';
+export const REMOVE_USERS = 'REMOVE_USERS';
 
 // Posts actions
 export const SET_POSTS = 'SET_POSTS';

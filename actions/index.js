@@ -3,6 +3,7 @@ import {
   SET_USERS,
   SET_USER,
   REMOVE_USER,
+  REMOVE_USERS,
   SET_POSTS,
   SEARCH_POSTS,
   REMOVE_POSTS,
@@ -26,6 +27,10 @@ export const toggleLoading = () => ({
 export const setUsers = users => ({
   type: SET_USERS,
   payload: users,
+});
+
+export const removeUsers = () => ({
+  type: REMOVE_USERS,
 });
 
 // User
