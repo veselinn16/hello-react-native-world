@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, Text} from 'react-native';
-import Modal from 'react-native-modal';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Spinner} from 'native-base';
+import {connect} from 'react-redux';
 
 // Components
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {View, Text} from 'react-native';
+import Modal from 'react-native-modal';
+import {Spinner} from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Heading from '../components/general/Heading';
 import UserTodos from '../components/todos/UserTodos';
@@ -15,7 +16,16 @@ import FilterMenu from '../components/todos/FilterMenu';
 import {toggleModalVisibility, cancelFilter} from '../actions';
 import {getResource} from '../utils/helpers';
 
-import {connect} from 'react-redux';
+// Style
+import masterStyleSheet from '../styles';
+const styles = masterStyleSheet.todosScreen;
+const headingExtraStyles = {
+  backgroundColor: '#222',
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+};
 
 const TodosScreen = ({
   user,
@@ -39,34 +49,20 @@ const TodosScreen = ({
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.todosScreen}>
       <Heading
         text={user ? `${user.name}'s Todos` : 'Unknown User'}
-        styles={{
-          backgroundColor: '#222',
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+        extraStyles={headingExtraStyles}>
         {user && (
           <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#fff',
-              marginLeft: 10,
-              padding: 5,
-              borderRadius: 5,
-            }}
+            style={styles.todosBtn}
             onPress={toggleModalVisibility}>
-            <Text style={{fontSize: 17, marginRight: 5}}>Sort</Text>
-            <Icon name="sort" size={23} color="#000" />
+            <Text style={styles.todosBtnText}>Sort</Text>
+            <Icon name="sort" style={styles.todosBtnIcon} />
           </TouchableOpacity>
         )}
       </Heading>
-      <View style={{flex: 9, backgroundColor: '#555'}}>
+      <View style={styles.todosContainer}>
         {user ? (
           isLoading ? (
             <Spinner color="tomato" />
@@ -78,7 +74,7 @@ const TodosScreen = ({
         )}
       </View>
       <Modal
-        style={{flex: 1}}
+        style={styles.modal}
         animationIn="slideInDown"
         animationOut="slideOutUp"
         isVisible={modalVisibility}

@@ -8,6 +8,10 @@ import FilterOption from './FilterOption';
 import {applyTodosFilter} from '../../utils/helpers';
 import {cancelFilter} from '../../actions';
 
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.todosScreen;
+
 const FilterMenu = ({
   toggleModalVisibility,
   applyTodosFilter,
@@ -24,43 +28,26 @@ const FilterMenu = ({
   };
 
   return (
-    <View
-      style={{
-        height: '40%',
-        padding: 10,
-        backgroundColor: '#777',
-        justifyContent: 'space-between',
-      }}>
+    <View style={styles.filterMenuConatiner}>
       <View
         style={{
           flex: 1,
           justifyContent: 'space-between',
         }}>
-        <Content
-          contentContainerStyle={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-          }}>
+        <Content contentContainerStyle={styles.filterMenu}>
           <FilterOption option={'Default'} />
           <FilterOption option={'Name'} />
           <FilterOption option={'Completed'} />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 15,
-              width: '80%',
-              justifyContent: 'space-between',
-            }}>
-            <View style={{width: '40%'}}>
+          <View style={styles.buttonsContainer}>
+            <View style={styles.buttonContainer}>
               <Button
                 color="tomato"
                 title="Cancel"
                 onPress={goBackToListNoFilter}
               />
             </View>
-            <View style={{width: '40%'}}>
+            <View style={styles.buttonContainer}>
               <Button title="Save" onPress={goBackToListFilter} />
             </View>
           </View>

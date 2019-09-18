@@ -1,23 +1,32 @@
-import React, {useState} from 'react';
-import {Container, Content, Icon, Input, Item} from 'native-base';
-
-import {updateSearch, searchPosts, resetSearch} from '../../actions';
+import React from 'react';
 import {connect} from 'react-redux';
+
+// Components
+import {Keyboard} from 'react-native';
+import {Container, Content, Icon, Input, Item} from 'native-base';
 import {NavigationEvents} from 'react-navigation';
+
+// Action creators
+import {updateSearch, searchPosts, resetSearch} from '../../actions';
+
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.postsScreen;
 
 const PostsInput = ({search, updateSearch, searchPosts, resetQuery}) => {
   const resetSearch = () => {
+    Keyboard.dismiss();
     resetQuery();
     searchPosts('');
   };
 
   return (
-    <Container style={{flex: 1.5, padding: 5, backgroundColor: '#555'}}>
+    <Container style={styles.inputContainer}>
       <NavigationEvents onWillBlur={resetQuery} />
       <Content>
         <Item>
           <Input
-            style={{color: '#fff'}}
+            style={styles.input}
             value={search}
             onChangeText={search => {
               updateSearch(search);
@@ -31,7 +40,7 @@ const PostsInput = ({search, updateSearch, searchPosts, resetQuery}) => {
             placeholderTextColor="#fff"
           />
           <Icon
-            style={{color: 'tomato', fontSize: 30}}
+            style={styles.inputIcon}
             onPress={resetSearch}
             active
             name="cross"

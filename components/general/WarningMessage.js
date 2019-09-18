@@ -2,23 +2,15 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.generalComponents;
+
 const WarningMessage = props => (
-  <View
-    style={{
-      flex: 9,
-      backgroundColor: '#555',
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}>
-    <Icon name="warning" size={80} color="#777" />
-    <View style={{width: '60%'}}>
-      <Text
-        style={{
-          color: 'tomato',
-          fontSize: 20,
-          textAlign: 'center',
-          marginTop: 15,
-        }}>
+  <View style={styles.warningContainer}>
+    <Icon name="warning" style={styles.warningIcon} />
+    <View style={styles.warningTextContainer}>
+      <Text style={styles.warningText}>
         Please select a user and come back!
       </Text>
     </View>

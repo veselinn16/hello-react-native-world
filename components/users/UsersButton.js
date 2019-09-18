@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,35 +10,19 @@ import {getUsers} from '../../utils/helpers';
 // Action Creators
 import {removeUsers} from '../../actions';
 
-import {connect} from 'react-redux';
+import styles from '../../styles/usersStyles';
 
 const UsersButton = ({users, removeUsers, getUsers}) => (
-  <View
-    style={{
-      flex: 1,
-      backgroundColor: '#333',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 10,
-    }}>
+  <View style={styles.btnContainer}>
     <TouchableOpacity
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        padding: 5,
-        borderRadius: 5,
-      }}
+      style={styles.btn}
       onPress={users.length ? removeUsers : getUsers}>
-      <Text style={{fontSize: 17, marginRight: 7}}>
+      <Text style={styles.btnText}>
         {users.length ? 'Remove users' : 'Get users'}
       </Text>
       <Icon
         name={users.length ? 'account-remove' : 'account-arrow-right'}
-        size={24}
-        color="black"
-        style={{marginRight: 10}}></Icon>
+        style={styles.btnIcon}></Icon>
     </TouchableOpacity>
   </View>
 );

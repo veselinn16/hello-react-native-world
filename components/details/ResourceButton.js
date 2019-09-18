@@ -1,40 +1,31 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
+// Action creator
 import {getResource} from '../../utils/helpers';
-import {connect} from 'react-redux';
+
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.detailsScreen;
 
 const ResourceButton = ({resource, getResource, navigation}) => {
   const capitalizeString = () => resource[0].toUpperCase() + resource.slice(1);
 
   return (
-    <View
-      style={{
-        backgroundColor: '#555',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-      }}>
+    <View style={styles.buttonContainer}>
       <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#fff',
-          padding: 5,
-          borderRadius: 5,
-        }}
+        style={styles.button}
         onPress={() => {
           getResource(resource);
           navigation.navigate(capitalizeString());
         }}>
-        <Text style={{fontSize: 17, marginRight: 7}}>{`See ${resource}`}</Text>
+        <Text style={styles.buttonText}>{`See ${resource}`}</Text>
         <Icon
           name={resource === 'posts' ? 'notebook' : 'note'}
-          size={24}
-          color="black"
+          style={styles.buttonIcon}
         />
       </TouchableOpacity>
     </View>

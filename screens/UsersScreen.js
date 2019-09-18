@@ -2,15 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 // Components
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import UsersButton from '../components/users/UsersButton';
 import UsersList from '../components/users/UsersList';
 import {Spinner} from 'native-base';
+import {NavigationEvents} from 'react-navigation';
 
 // Action Creators
 import {removePosts, removeTodos, removeUser, resetSearch} from '../actions';
-import {NavigationEvents} from 'react-navigation';
+
+// Styles
+import masterStyleSheet from '../styles';
 
 const UsersScreen = ({
   navigation,
@@ -21,6 +24,8 @@ const UsersScreen = ({
   removeUser,
   resetSearch,
 }) => {
+  const styles = masterStyleSheet.usersScreen;
+
   const removeExistingData = () => {
     removePosts();
     removeTodos();
@@ -29,24 +34,16 @@ const UsersScreen = ({
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.usersContainer}>
       <NavigationEvents onWillFocus={removeExistingData} />
       <UsersButton />
-      <View style={{flex: 9, backgroundColor: '#555'}}>
+      <View style={styles.userListContainer}>
         {users.length > 0 ? (
           <UsersList users={users} navigation={navigation} />
         ) : isLoading ? (
           <Spinner color="tomato" />
         ) : (
-          <Text
-            style={{
-              color: '#fff',
-              textAlign: 'center',
-              marginTop: 10,
-              fontSize: 15,
-            }}>
-            Users will appear here!
-          </Text>
+          <Text style={styles.usersMessage}>Users will appear here!</Text>
         )}
       </View>
     </View>

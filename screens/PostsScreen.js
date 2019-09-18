@@ -1,7 +1,8 @@
 import React from 'react';
-import {View} from 'react-native';
+import {connect} from 'react-redux';
 
 // Components
+import {View} from 'react-native';
 import {NavigationEvents} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Heading from '../components/general/Heading';
@@ -10,19 +11,21 @@ import WarningMessage from '../components/general/WarningMessage';
 import PostsInput from '../components/posts/PostsInput';
 import {Spinner} from 'native-base';
 
-import {connect} from 'react-redux';
-
 // Action Creators
 import {getResource} from '../utils/helpers';
 import {toggleLoading, searchPosts} from '../actions';
 
+// Styles
+import masterStyleSheet from '../styles';
+const styles = masterStyleSheet.postsScreen;
+
 const PostsScreen = ({getResource, isLoading, user, postsObj}) => {
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.postsScreen}>
       <NavigationEvents onWillFocus={user ? getResource : null} />
       <Heading
         text={user ? `${user.name}'s Posts` : 'Unknown User'}
-        styles={{
+        extraStyles={{
           backgroundColor: '#222',
           flex: 1,
           justifyContent: 'center',
@@ -30,7 +33,7 @@ const PostsScreen = ({getResource, isLoading, user, postsObj}) => {
         }}
       />
       {user && <PostsInput />}
-      <View style={{flex: 9, backgroundColor: '#555'}}>
+      <View style={styles.mainContainer}>
         {user ? (
           isLoading ? (
             <Spinner color="tomato" />

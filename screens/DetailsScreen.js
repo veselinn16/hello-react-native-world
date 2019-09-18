@@ -16,6 +16,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 // Action Creators
 import {removeUser} from '../actions';
 
+//Styles
+import masterStyleSheet from '../styles';
+const styles = masterStyleSheet.detailsScreen;
+
 const DetailsScreen = ({navigation, user, removeUser}) => {
   const navigateBackToUsers = () => {
     removeUser();
@@ -24,10 +28,10 @@ const DetailsScreen = ({navigation, user, removeUser}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.detailsScreen}>
       <Heading
         text={user ? `Details about ${user.name}` : 'Unknown User'}
-        styles={{
+        extraStyles={{
           backgroundColor: '#222',
           flex: 1,
           justifyContent: 'center',
@@ -38,36 +42,17 @@ const DetailsScreen = ({navigation, user, removeUser}) => {
       {user ? (
         <Fragment>
           <UserData user={user} />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              width: '100%',
-              backgroundColor: '#555',
-            }}>
+          <View style={styles.buttonsContainer}>
             <ResourceButton resource="posts" navigation={navigation} />
             <ResourceButton resource="todos" navigation={navigation} />
           </View>
           {/* REFACTOR TO USERBUTTON COMPONENT */}
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#555',
-            }}>
+          <View style={styles.goBackBtnContainer}>
             <TouchableOpacity
-              style={{
-                backgroundColor: '#fff',
-                padding: 5,
-                borderRadius: 5,
-                flexDirection: 'row',
-              }}
+              style={styles.goBackBtn}
               onPress={navigateBackToUsers}>
-              <Icon name="arrow-left-bold" size={24} />
-              <Text style={{color: '#000', fontSize: 17, marginLeft: 5}}>
-                Back to users
-              </Text>
+              <Icon name="arrow-left-bold" style={styles.goBackBtnIcon} />
+              <Text style={styles.goBackBtnText}>Back to users</Text>
             </TouchableOpacity>
           </View>
         </Fragment>

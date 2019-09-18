@@ -1,18 +1,25 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
+// Components
 import {ListItem, Radio, Right, Left, Text} from 'native-base';
 
-import {connect} from 'react-redux';
+// Action creators
 import {setTemporaryFilter} from '../../actions';
+
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.todosScreen;
 
 const FilterOption = ({filter, option, setTemporaryFilter}) => {
   return (
     <ListItem
-      style={{width: '100%'}}
+      style={styles.optionsConatiner}
       onPress={() => {
         setTemporaryFilter(option);
       }}>
       <Left>
-        <Text style={{color: '#fff'}}>{option}</Text>
+        <Text style={styles.optionText}>{option}</Text>
       </Left>
       <Right>
         <Radio

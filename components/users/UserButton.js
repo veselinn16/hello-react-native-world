@@ -6,6 +6,9 @@ import {connect} from 'react-redux';
 // Action Creators
 import {setUser} from '../../actions';
 
+// Styles
+import styles from '../../styles/usersStyles';
+
 const UserButton = ({navigation, setUser, evenIndex, user}) => {
   const showUserData = () => {
     setUser(user);
@@ -15,20 +18,18 @@ const UserButton = ({navigation, setUser, evenIndex, user}) => {
   return (
     <View
       style={{
-        marginBottom: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
+        ...styles.userBtnContainer,
         backgroundColor: evenIndex ? '#999' : '#777',
       }}>
-      <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
-        <Icon name="account" size={30} color="white" />
+      <View style={styles.userIconContainer}>
+        <Icon name="account" style={styles.userIcon} />
       </View>
-      <View style={{flex: 4}}>
-        <Text style={{fontSize: 15}}>User: {user.name}</Text>
-        <Text style={{fontSize: 15}}>Username: {user.username}</Text>
+      <View style={styles.userDataContainer}>
+        <Text style={styles.userDetails}>User: {user.name}</Text>
+        <Text style={styles.userDetails}>Username: {user.username}</Text>
       </View>
-      <View style={{flex: 1}}>
-        <Button title="go to user" onPress={showUserData} />
+      <View style={styles.userBtn}>
+        <Button title="select user" onPress={showUserData} />
       </View>
     </View>
   );

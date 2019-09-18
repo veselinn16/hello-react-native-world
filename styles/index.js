@@ -1,4 +1,17 @@
 import {StyleSheet} from 'react-native';
+import usersStyles from './usersStyles';
+import detailsStyles from './detailsStyles';
+import generalComponentStyles from './general';
+import todosStyles from './todosStyles';
+import postsStyles from './postsStyles';
+
+export default {
+  usersScreen: usersStyles,
+  detailsScreen: detailsStyles,
+  todosScreen: todosStyles,
+  postsScreen: postsStyles,
+  generalComponents: generalComponentStyles,
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -43,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+// export default stylesReal;

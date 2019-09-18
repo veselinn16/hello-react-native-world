@@ -1,7 +1,12 @@
 import React from 'react';
-import {View, FlatList, Text} from 'react-native';
 
+// Components
+import {View, FlatList, Text} from 'react-native';
 import Accordion from './Accordion';
+
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.postsScreen;
 
 const UserPosts = ({posts}) =>
   posts.length > 0 ? (
@@ -11,15 +16,8 @@ const UserPosts = ({posts}) =>
       renderItem={({item}) => <Accordion title={item.title} data={item.body} />}
     />
   ) : (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        marginTop: 15,
-      }}>
-      <Text style={{fontSize: 25, fontWeight: 'bold', color: 'tomato'}}>
-        No Posts Found!
-      </Text>
+    <View style={styles.postsWarningContainer}>
+      <Text style={styles.postsWarningText}>No Posts Found!</Text>
     </View>
   );
 

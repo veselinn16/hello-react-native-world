@@ -1,18 +1,14 @@
 import React from 'react';
+
+// Components
 import {View, Text, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+// Styles
+import masterStyleSheet from '../../styles';
+const styles = masterStyleSheet.todosScreen;
+
 const UserTodos = ({todos}) => {
-  determineTopMargin = index => {
-    if (index === 0) return 0;
-    return 2;
-  };
-
-  determineBottomMargin = index => {
-    if (index === todos.length - 1) return 0;
-    return 2;
-  };
-
   return (
     <FlatList
       data={todos}
@@ -22,18 +18,11 @@ const UserTodos = ({todos}) => {
         return (
           <View
             style={{
-              marginTop: determineTopMargin(index),
-              marginBottom: determineBottomMargin(index),
-              padding: 10,
-              height: 50,
-              width: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              ...styles.todosList,
               backgroundColor: item.completed ? '#38cc4f' : '#ff7259',
             }}>
-            <View style={{maxWidth: '80%'}}>
-              <Text style={{fontSize: 15}}>{item.title}</Text>
+            <View style={styles.todoListItem}>
+              <Text style={styles.todoListItemText}>{item.title}</Text>
             </View>
             <Icon
               name={item.completed ? 'check' : 'close'}

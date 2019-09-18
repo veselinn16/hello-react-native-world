@@ -1,13 +1,14 @@
 import React, {Fragment} from 'react';
 import {FlatList} from 'react-native';
 
+// Components
 import UserButton from './UserButton';
 import Heading from '../general/Heading';
 
 const UsersList = ({users, navigation}) => {
   return (
     <Fragment>
-      <Heading text={'Users'} styles={{backgroundColor: '#555'}} />
+      <Heading text={'Users'} extraStyles={{backgroundColor: '#555'}} />
       <FlatList
         data={users}
         keyExtractor={(item, index) => index.toString()}
